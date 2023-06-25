@@ -1,0 +1,698 @@
+HTML	是网页的骨架
+CSS	是网页的颜值
+javascript是网页的行为
+数据       是网页的灵魂
+
+资源请求方式
+get和post
+get请求通常用于获取服务端资源
+	例如：根据URL地址从服务器获取HTML文件等
+post请求通常用于向服务器提交数据(往服务器发送资源)
+	例如：登录的时候提交登录信息，注册时提交注册信息等各类数据的提交
+Ajax即异步的js和XML
+通俗的理解就是在网页中利用XMLHttpRequest对象和服务器进行数据交互的方式，就是Ajax
+Ajax能让我们轻松的实现网于服务器之间的交互
+典型的应用就是注册用户的时候，通过ajax的形式，动态加载搜索提示框
+
+jQuery中的Ajax
+	jQuery中发起Ajax请求最常用的三个方法
+	$.get()   功能单一，专门发起get请求，从而将服务器上的资源请求到客户端进行操作
+		$.get(url，[data],[callback])
+		url要请求的资源地址
+		data请求资源期间要携带的参数   对象
+		callback请求成功时的回调函数	函数
+	$.post()功能单一，专门发起post请求，从而向服务器提交数据
+		$.post(url,[data],[callback])
+		url要提交数据的地址
+		data要提交的数据   对象
+		callback提交成功时的回调函数	函数
+	$.ajax()相比较$get()和$post()函数，$.ajax()是功能综合的函数，允许我们对Ajax进行更详细的配置
+	$ajax({
+		type:' ',	//请求方式get/post
+		url:' ',	//请求的地址
+		data:' ',	//请求时携带的数据
+		success:function(res){ }//请求成功之后的回调函数
+		})
+接口测试工具
+	postMan的官网下载地址http://www.getpostman.com/downloads/
+接口文档的组成部分
+	接口文档包含很多信息，也可以按需进行精简，一个合格的接口文档包含以下6项内容
+	1 接口名称：用来表识各个接口的简单说明，如登录接口，获取图书列表接口等
+	2 接口URL地址：接口的调用地址
+	3 调用方式：接口调用方式 如GET/POST
+	4 参数格式：接口需要传递的参数，每个参数必须包含参数名称，参数类型，是否必选，参数说明这4个部分
+	5 响应格式：接口的返回值的详细描述，一般包含数据名称，数据类型，说明3项内容
+	6 返回示例(可选)：通过对象的形式，例举服务器返回数据的结构
+form表单常见的属性
+	action	URL地址，规定当提交表单时，向何处发送表单数据
+	method	get/post	规定以何种方式提交到action的URL地址
+	enctype	application/x-www-form-urlencoded	在发送前编码所有字符(默认)
+		multipart/form-data			不对字符编码，在使用包含文件上传控件的表单时，必须使用该数值
+		text/plain				空格转化为'+'加号，但不对特殊字符编码(很少用)
+	target	_blank	在新窗口打开
+		_self	在当前窗口打开
+		_parent
+		_top
+		framename	规定在何处打开action	的URL
+表单的同步提交
+	通过点击submit按钮，触发表单提交的操作，从而使页面跳转到actionURL的行为，叫表单的同步提交
+	缺点：
+	1  表单提交后，整个页面会发生跳转，用户体验差
+	2  表单提交后，页面之前的状态和数据丢失
+解决方案：表单只负责采集数据，Ajax负责将数据提交到服务器
+
+监听表单的提交事件
+           //第一种
+            /* $('#f1').submit(function () {
+                alert('监听到提交')
+            }) */
+            //第二种
+            /* $('#f1').on('submit', function () {
+                alert('监听到提交')
+            }) */
+
+阻止表单默认提交行为
+e.preventDefault( )
+
+快速获取表单里面的数据
+serialize( )函数  快速获取表单里面的数据
+	语法：$(selector).serialize( )
+	可以一次性获取到所有的表单里的数据
+注意，在使用serialize( )函数的时候必须把每个表单元素的name属性赋值
+
+即：jquery对象[0]  可以使用js原生方法
+
+即：$('#jquery')[0]  === document.querySelector('#jquery')
+	
+模板引擎的基本概念
+	模板引擎即根据程序员指定的模板结构和数据，自动生成一个完整的HTML页面
+art-template模板引擎
+	官网地址：http://aui.qithub.io/art-template/zh-cn/index.html
+art-template的安装
+	http://aui.qithub.io/art-template/zh-cn/docs/installation.html下载，
+	将art-template下载到本地，通过<script>标签引入到网页中进行使用
+art-template的使用步骤
+	导入art-template
+	定义数据
+	定义模板	注意：模板的HTML结构，必须定义到script标签中且<script type="text/html">type属性必须更改
+	调用template函数  ，即template('模板的id'，'渲染的数据')
+
+正则的函数
+正则与字符串的操作
+	exec( )函数用于检索字符串中的正则表达式的匹配
+	如果字符串中有匹配的值，则返回该匹配值，否则返回null
+	let pattern = /o/定义正则规则
+	let str='hello'
+	log(pattern.exec(str)) //输出结果['o',index:4,input:'hello',groups:undefined]
+	
+	字符串的replace( )函数
+	replace( )函数用于在字符串中用一些字符替换另一些字符，语法格式如下
+	let result = '123456'.replace('123','abc')//得到result的值为字符串'abc456'
+
+
+XMLHttpRequest
+	XMLHttpRequest简称xhr是浏览器js对象，可以请求服务器上的数据资源，jQuery中的Ajax函数就是基于xhr对象封装出来的
+使用xhr发起GET请求
+	// 创建XHR对象
+       	 let xhr = new XMLHttpRequest()
+        	//调用open函数，指定请求方式与URL地址
+        	xhr.open('GET', 'http://ajax-base-api-t.itheima.net')
+        	//调用send函数 发起Ajax请求
+        	xhr.send()
+        	//监听onreadystatechange事件
+        	xhr.onreadystatechange = function () {
+            			//监听xhr的请求状态readyState;与服务器响应状态status
+            			if (xhr.readyState == 4 && xhr.status === 200) {
+                			//打印服务器响应回来的数据
+                			console.log(xhr.responseText);
+            			}
+       	 }
+
+XMLHttpRequest的readyState属性
+	用来表示当前Ajax请求状态所处的状态
+	0	UNSENT	XMLHpptRequest对象已被创建，但尚未调用open()方法
+	1	OPENED	open()方法已经被调用
+	2	HEADERS_RECEIVED	    send()方法已经被调用，响应头也已经被接收
+	3	LOADING		数据接收中，此时response属性中已经包含部分数据
+	4	DONE		Ajax请求完成，这意味着数据传输已经彻底完成或失败
+使用xhr发起带参数的GET请求
+    	只需要在调用xhr.open期间，为URL地址指定参数即 ? id=1 
+	xhr.open('GET', 'http://ajax-base-api-t.itheima.net/api/getbooks?id=1')
+
+查询字符串5E6
+	格式:将英文?放在URL的末尾，然后再加上  参数=值，想加上多个参数的话，使用&符号进行分割
+	以这种形式可以将想要发给服务器的数据添加到URL中
+URL编码原则
+	使用英文字符表示非英文字符
+	一个中文字用URL编码表示即三组%  ,如'东'编码后即  %E5%E8%A5
+URL编码与解码的API
+	encodeURI( )编码的函数
+	decondeURI( )解码的函数
+	console.log(encodeURI("黑马程序员")); //%E9%BB%91%E9%A9%AC%E7%A8%8B%E5%BA%8F%E5%91%98
+	console.log(decodeURI("%E9%BB%91")); //黑
+使用XMLHpptRequest的基本使用
+    使用xhr发起POST请求
+步骤：
+      1创建xhr对象
+let xhr = new XMLHttpRequest( )
+      2调用xhr.open()函数
+xhr.open('POST','http://www.liulongbin.top:3006/api/addbook')
+      3设置Content-Type属性(固定写法)
+xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+      4调用xhr.send()函数，同时指定要发送的数据 ,注意数据一定要以查询字符串的方式提交给服务器
+xhr.send('bookname=水浒传&author=施耐庵&publisher=天津图书出版社')
+      5监听xhr.onreadystatechange事件
+xhr.onreadystatechange = function( ){
+	if(xhr.readyState === 4 && xhr.status === 200){
+	log( xhr.responseText)
+	}
+ }
+数据交换格式
+	就是服务器与客户端之间进行数据传输与交换的格式
+前端的数据交换格式经常为XML和JSON，但XML比较少用JSON为重点
+	XML和HTML一样都是标记性语言，但两者之间没有任何关系，HTML为描述网页内容的载体XML是设计用于传输和储存数据，即数据载体
+	具体格式如下
+	<note>	 //node表示一天消息
+	<to>李三</to>//to表示发给谁的
+	<form>张三</form>//消息的来源
+	<heading>通知<heading>//消息的标题
+	<body>晚上开会</body>	//消息的具体内容
+	</noter>
+XML的缺点：
+格式臃肿，和数据无关的代码太多，体积大，传输效率低
+再js中解析XML比较麻烦
+
+JSON全称JavaScript Object Notation即js对象表示法，
+	其使用文本表示js对象或数组，因此JSON的本质就是字符串
+JSON是轻量级的文本数据交换格式，在作用上类似于XML，专门用于储存和传输数据，但是JSON比XML更小更快更易解析
+JSON的两种结构
+	对象结构:对象结构在JSON中表示为{ }括起来的内容，数据结构为{key:value,key:value}键值对结构
+	值的结构:其中key必须是英文双引号包裹的字符串，value的数据类型可以是数字，字符，布尔，null，数组，对象类型
+	
+	数组结构:数组结构在JSON中表示[ ]括起来的内容结构为["java","javascript",30,true]
+	数组中数据的类型可以是数字，字符，布尔，null，数组，对象这6种类型
+JSON语法注意事项
+	属性名必须双引号包裹
+	字符串类型的值必须使用双引号包裹
+	JSON不允许单引号表示字符
+	JSON中不允许任何形式的注释
+	JSON的最外层必须是对象或数组格式
+JSON的作用就是在计算机和网络之间存储数据的
+JSON的本质就是个字符串
+JSON和js之间的相互转换
+	JSON.parse( )方法JSON字符串转换为js对象
+	JSON.stringify( )方法把js对象转换为JSON字符串
+序列化化和反序列化
+ 	把数据对象转化为字符串的过程就是序列化，       JSON.stringify( )即JSON序列化
+	把字符串转化为数据对象的过程就是反序列化      JSON.parse( )即JSON反序列化
+
+XMLHttpRequest Level2的新特性
+	1 可以设置HTTP请求的时限
+		timeout属性设置请求时限
+		xhr.timeout = 3000//即超出3s即请求失败
+		与这个属性配套的还有ontimeou事件，用来指定超出时限之后的回调函数
+		即xhr.ontimeout = function(event){
+			alert('请求超时！')}
+	2 可以使用formData对象管理表单数据
+		使用如下：
+		新建formData对象
+		let fd = new FormData( )
+		为FromData添加表单项
+		fd.append('uname','张三')
+		fd.append('upwd','123456')
+		创建XHR对象
+		let xhr = new HMLHttpRequest()
+		指定请求类型与URL地址
+		xhr.open('POST','http;//www....')
+		直接提交FormDtata对象，这与提交网页表单效果完全一样
+		xhr.send(fd)
+		监听onreadystatechange事件
+		xhr.onreadystatechange = function(){
+		if(xhr.readystate == 4 && status == 200){
+			log(xhr.responseText)}}
+	3 可以上传文件
+		实现步骤
+		定义UI结构
+			文件选择框
+			<input type = "file" id = "filel">
+			上传按钮
+			<button id="btnUpload">上传文件<button><br/>
+			显示上传到服务器上的图片
+			<img src="" alt="" id="img" width = "800"/>
+		验证是否选择了文件
+			获取上传文件的按钮
+			let btnUpload = document.querySelector('#btnUpload')
+			为按钮添加监听事件
+			btnUpload.addEventListener('click',function(){
+				获取选择的文件列表
+				let files = document.querySelector('#filel').files
+				if(files.length <= 0){
+				return alert('请选择要上传的文件')}
+		向FormData中追加文件
+			创建FormData对象
+			let fd = new FormData()
+			向FormData中追加文件
+			fd.append('avatar',files[0])
+		使用xhr发起上传文件的请求
+			创建xhr对象
+			let xhr = new XMLHttpRequest()
+			调用open函数，指定传输类型必须是POST
+			xhr.open('post','api/upload/avatar')
+			发起请求
+			xhr.send(fd)
+		监听onreadystatechsnge事件
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState === 4&&xhr.status ===200){
+					let data = JSON.parse(xhr.responseText)
+					if(data.status===200){//上传成功
+					 document.querySelector('#img').src='http://+data.url'
+				}else{//上传失败
+				log(data.message)}}}
+	4可以在传输数据的过程中获取进度信息
+		创建XHR对象
+		let xhr = new XMLHttpRequest( )
+		监听xhr.upload的onprogress事件
+		xhr.upload.onprogress = function(e){
+			e.lengthComputable是一个布尔值，表示当前上传的资源是否具有可计算的长度
+			if(e.lengthComputable){
+				e.loaded已经传输的字节
+				e.total需要传输的总字节
+				let percentComplete = Math.ceil((e.loaded/e.total)*100)}}
+				percentComplete即是上传的进度
+e.lengthComputable是一个布尔值，表示当前上传的资源是否具有可计算的长度
+e.loaded已经传输的字节
+e.total需要传输的总字节
+	监听上传完成事件
+	xhr.upload.onload = function () {
+                //移除上传中的类样式
+                percent.className = ''
+                //添加上传完成的样式
+                percent.className = 'progress-bar progress-bar-success'
+            }
+使用jQuery上传文件时必须使用$.ajax，且属性中必须有processData: false,contentType: false,两个固定属性
+$('#btnUpload').on('click', function (e) {
+                //因为此处是用jQuery方法获取的元素，而files为原生属性，$('#files')[0]即把jQuery转换为js原生对象
+                let files = $('#files')[0].files
+                //判断用户是否有选则上传文件files即选中的值，以数组的形式存放
+                if (files.length <= 0) {
+                    return alert('请选择要上传的文件')
+                }
+
+                //将用户选择的文件追加到FormData里面
+                let fd = new FormData()
+                fd.append('avatar', files[0])
+
+发起jQuery的Ajax请求
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://ajax-base-api-t.itheima.net/api/upload/avatar',
+                    data: fd,
+                    //不修改Content-Type属性，使用FromData默认的Content-Type值
+                    processData: false,
+                    //不对FromData中的数据进行url编码，而是将FromData数据原样发送到服务器
+                    contentType: false,
+                    success: function (res) {
+                        console.log(res);
+                    }
+                })
+jQuery实现loading效果
+	//自jQuery版本1.8起  该方法只能被附加到文档
+	监听发起ajax请求	
+	$(document).ajaxStart(function(){
+	$('#loading').show()
+	})
+	监听ajax请求结束
+	$(document).ajaxStop(function(){
+	$('#loading').hide()
+	})
+Axios专注于网络数据请求的库
+	Axios发起get请求
+	axios.get('url',{params:{/*参数*/}}).then(回调函数)
+	document.querySelector('#btn1').addEventListener('click', function () {
+            	let url = 'http://ajax-base-api-t.itheima.net/api/get'
+            	let params = {
+                	name: 'zs',
+                	age: 20,
+           		 }
+            	axios.get(url, { params: params }).then(function (res) {
+                		console.log(res);
+            			})
+        	})
+Axios发起POST请求
+        document.querySelector('#btn2').addEventListener('click', function () {
+            let url = 'http://ajax-base-api-t.itheima.net/api/post'
+            let dataObj = {
+                address: '北京',
+                location: '顺序去'
+            }
+            axios.post(url, dataObj ).then(function (res) {
+                console.log(res.data);
+            })
+        })
+直接使用axios发起请求
+        axios({
+            method: '请求类型',
+            url: '请求url地址',
+            data: {/*post数据*/ },
+            params: {/*get参数*/ }
+        }).then(/*回调函数*/)
+同源即：两个页面的协议，域命和端口(不写默认为80)都相同
+同源策略：即浏览器规定A网站的js不允许和非同源的网址C之间进行资源的交互
+        无法读取非同源网址的Cookie，LocalStoraage和IndexedDB
+        无法接触非同源网址的DOM
+        无法向非同源地址发Ajax请求
+跨域即：两个页面的协议，域命和端口(不写默认为80)有一项或多项不一致
+出现跨域的根本原因:浏览器同源策略不允许非同源的URLzhi'j
+
+如今实现跨域请求数据最主要的两种解决方案分别是JSONP和CORS
+JSONP：出现的比较早，兼容性比较好，只支持get请求，不支持post请求
+	<script src="http://ajax-base-api-t.itheima.net/api/jsonp?callback=success&name=ls&age=30"></script>
+	JSONP和Ajax之间没有任何关系，不能把JSONP请求数据的方式叫做Ajax，因为JSONP没有用到xhr对象
+jQuery提供的$.ajax()函数，除了可以发起真正的Ajax数据请求外，还能够发起JSONP数据请求
+	$.ajax({
+	url:'http://ajax.fronted.itheima.net:33600/api/json?name=zs&age=20'})
+	如果使用$.ajax()发起JSON请求，必须指定datatype为jsonp
+	dataType:'jsonp',
+	success:function(res){console.log(res)}})
+使用jQuery发起JSONP请求，会自动携带一个callback=jQURYxxx的参数，jQURYxxx是随机生成的一个回调函数
+CORS：是W3C标准，属于Ajax请求的根本解决方案，支持GET和POST请求，缺点是不兼容某些版本的浏览器
+
+http协议属于客户端浏览器和服务器之间的通信协议，因此客户端发起的请求叫做http请求
+	客户端发送到服务器的消息，叫做http请求消息
+http请求消息的组成为：请求行(request line),请求头部(header),空行和请求体4部分组成
+	请求行由请求方式,URL和HTTP协议版本3个部分组成，之间用空格隔开 
+http响应消息的组成为：响应行(request line),响应头部(header),空行和响应体4部分组成
+	响应行由响应方式,URL和HTTP协议版本3个部分组成，之间用空格隔开 
+空行就是用来分隔请求/响应头部和请求/响应体的，没有其他任何含义
+
+HTTP的请求方法
+	GET(查询)发送请求来获的服务器上的资源，请求体中不包含请求数据，请求数据放在协议头中
+	POST(新增)向服务器提交资源(例如提交表单或上传文件),数据被包含在请求体中提交给服务器
+	PUT(修改)向服务器提交资源，并使用提交的新资源，替换掉服务器对应的旧资源
+	DELETE(删除)请求服务器删除指定的资源
+	HEAD：HEAD方法请求一个与GET请求的响应相同的响应，但没有响应体
+	OPTIONS获取http服务器支持的http请求方法，允许客户端查看服务器的性能，比如ajax跨域的预检等
+	CONNECT建立一个到由目标资源标识的服务器的隧道
+	TRACE沿着到目标资源的路径执行一个消息环回测试，主要用于测试或诊断
+	PATCH是对PUT方法的补充，用来对已知资源进行局部更新
+http响应状态码
+	响应状态码由三个十进制数字组成，第一个十进制是数字定义了状态码的类型，后面两个数字用来对状态码进行细分
+	1** 信息，服务器收到的请求，需要请求者继续执行操作(实际开发中很少遇到1**类型的状态码)
+	2**成功，操作被成功接收并处理
+		200	ok	请求成功，一般用于GET与POST
+		201	Created	已创建，成功请求并创建了新的资源，通常用于POST或PUT请求
+	3**重定向，需要进一步的操作以完成请求
+		301	MobedPermanently永久移动，请求的资源已被永久的移动到新URL，返回信息回包括新的URL，浏览器会自动定向到新URL，今后任何新的请求都应使用新的URL代替
+		302	Found临时移动，与301类似，但资源只是临时被移动，客户端应继续使用原有URL
+		304	Not Modified未修改，所请求的资源未修改，服务器返回此状态码时，不会返回任何资源(响应消息中不包含响应体)，客户端通常会缓存访问过的资源
+	4**客户端错误，请求包含语法错误或无法完成请求
+		400	Bad Request语义有误，当前请求无法被服务器理解，除非进行修改，否则客户端不应该重复提交这个请求，请求参数有误
+		401	Unauthorized当前请求需要用户验证
+		403	Forbidden服务器已经理解请求，但是拒绝执行它
+		404	Not Found服务器无法根据客户端请求找到资源(网页)
+		408	RequestTimeout请求超时，服务器等待客户端发送的请求实际过长，超时
+	5**服务器错误，服务器在处理请求的过程中发生了错误
+		500	IntemalServerError服务器内部错误，无法完成请求
+		501	NotImplemented服务器不支持该请求方法，无法完成请求，只有GET和HEAD请求方法是要求每个服务器必须支持的，其他请求方法在不支持的服务器上会返回501
+		503	ServiceUnavailable由于超载或系统维护，服务器暂时的方法处理客户端的请求
+分布式版本控制系统Git学习
+git镜像网站：
+https://github.puboat.com
+	git是一个开源的分布式版本控制系统，是目前世界上最先进最流行的版本控制系统，可以快速高效的处理很小到非常大的项目版本管理
+	git特性：1直接记录快照，而非差异比较，2近乎所有的操作都是本地执行
+git的三种状态：已修改modified已暂存staged已提交committed
+	git下载地址：https://git-scm.com/downloads
+初始化git仓库，即创建一个git仓库命令  git init
+
+配置git的基本信息 
+	密码：Rzl123123
+	git config --global user.name"datanggo"
+	git config --global user.email"zhenli-ren@foxmail.com"
+查看所有全局配置项
+	git config --list --global
+查看指定的全局配置项
+	git config user.name
+	git config user.email
+git status命令查看文件处于什么状态
+精简显示文件状态的命令 -s 即--short的简写，等价于git status
+$ git status -s
+?? index.html
+即意思是此文件未被跟踪
+跟踪新文件的命令	git add开始跟踪一个文件    格式如下
+git add index.html 表示跟踪此新文件
+
+$clear表示清空终端的历史信息
+
+git commit执行此命令可以把git add添加到暂存区的文件进行提交，其中-m选项后面是本次提交的消息，用来对本次提交的内容进一步的描述
+如：git commit -m "新建了index.html文件"
+
+git add 命令
+	1 可以用它跟踪新文件
+	2 把已跟踪的，且已修改的文件放到暂存区
+	3 把有冲突的文件标记为已解决状态，
+
+撤销对文件的修改	git checkout -- index.html命令，撤销对index.html文件的修改
+
+向暂存区中一次性添加多个文件，格式如：git add .
+
+如果需要从暂存区中移除对应的文件，可以使用如下命令
+git reset HEAD 要移除的文件名
+
+git提供了一个跳过使用暂存区的方式，只要在提交的时候，给git commit加上-a选项，
+git就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过git add步骤
+
+移除文件
+从git仓库中移除文件的方式有两种
+1 从git仓库和工作区中同时移除对应的文件
+	git rm -f index.js
+2 只从git仓库中移除指定的文件，但保留工作区中对应的文件
+	git rm --cached index.css
+
+忽略文件
+我们可以创建一个名为.gitignore的配置文件，列出要忽略的文件的匹配模式
+	文件.gitignore的格式规范如下
+	1 以#开头的是注释
+	2 以/结尾的是目录
+	3 以/开头的是防止递归
+	4 以！开头的表示取反
+	5 可以使用glob模式进行文件夹和文件夹的匹配(glob指简化了的正则表达式)
+		1 星号*匹配零个或多个任意字符
+		2 [abc]匹配任何一个列在方括号中的字符(此案例匹配一个a或匹配一个b或匹配一个c)
+		3 问好？只匹配一个任意字符
+		4 在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配(比如[0-9]表示匹配到所有的数字)
+		5 两个星号**表示匹配任意中间目录(比如a/**/z可以匹配a/z，a/b/z或a/b/c/z等)
+.gitignore文件的例子
+#忽略所有的.a文件
+*.a
+#但跟踪所有的lib.a 文件，即便前面忽略了所有的.a
+!lib.a
+#只忽略当前目录下的TODO文件，而不忽略subdir/TODO
+/TODO
+#包含任何目录下名为build的文件夹
+build/
+#忽略doc/notes.txt，但不忽略doc/server/arch.txt
+doc/*.txt
+#忽略doc/目录及其所有子目录下的.pdf文件
+doc/**/*.pdf
+
+git查看提交历史
+	git log 按照时间顺序列出所有的提交历史
+	git log -2 只展示最新的两条已经历史，数字可以按需填写
+	git log -2 --pretty=oneline在一行上展示最近两条提交历史
+	
+	在一行上展示最近两条提交历史，并自定义输出格式
+	%h提交的简写哈希值   %an作者名字    %ar作者修订日期，按多久以前的方式显示
+	git log -2 --pretty=format:"%h | %an | %ar | %s"
+	
+git回退到指定版本
+
+在一行上展示所有是提交历史
+git log --pretty=oneline
+
+使用git reset --hard命令，根据指定的提交	id回退到指定版本
+git reset --hard <CommitID>
+
+在旧版本中使用git reflog --pretty=oneline命令，查看命令操作的历史
+git reflog --pretty=oneline
+
+再次根据最新的提交Id，跳转到最新版本
+git reset --hard <CommitID>
+
+本地现成的仓库上传到git hub的仓库
+	将本地仓库和远程仓库进行关联，并把远程仓库命名为origin
+git remote add origin https://github.com/datanggo/datanggo_test.git
+	
+git branch -M main	
+	将本地仓库中的内容推送到远程的origin仓库中
+git push -u origin main
+
+使用SSH key设置远程仓库和本地仓库建立联系
+使用git bash 输入ssh-keygen -t rsa -b 4096 -C "zhenli-ren@foxmail.com"
+会生成两个文件存放到本地用户/ .ssh下面
+	1 id_rse（私钥文件，存放于客户端的电脑即可）
+	2 id_rse.pub（公钥文件，需配置到Git hub中）
+配置完线上线下仓库后可执行
+ssh -T git@github.com   检测是否完成线上线下成功链接
+同时设置好github之后执行
+$ git remote add origin git@github.com:datanggo/datanggo_test.git
+$ git branch -M main
+$ git push -u origin main
+命令即提交到github仓库
+注意：只有第一次提交线上仓库时$ git push -u origin main需要定义仓库名称，后面的提交不需要直接$ git push即可
+
+SSH key的作用即实现本地仓库和Github之间免登录的加密数据传输
+SSH key的好处时：免登录身份认证，数据加密传输
+
+将远程仓库克隆到本地
+git clone 远程仓库地址
+
+git分支
+
+master主分支
+	在初始化本地git仓库的时候，git默认已经帮我们创建了一个名字叫master的分支，通常我们把这个master分支叫做主分支
+功能分支
+	由于程序员不能直接在master分支上进行功能的开发，所以就有了功能分支
+	功能分支指的是专门用来开发新功能的分支，它是临时从master主分支分叉出来的，功能测试完毕后，最终需要合并到master主分支上
+查看分支列表
+	在git仓库查看所有分支列表的命令为
+	git branch
+创建新分支
+	使用如下命令可以基于当前分支创建一个新的分支，新分支中的代码和当前分hi完全一样
+	git branch 分支名
+切换分支
+	git checkout 分支名	使用此命令可以切换到指定的分支上
+快速创建并且切换分支
+	git checkout -b 分支名称
+	-b 表示创建一个新分支，checkout表示切换到刚才的新分支上
+合并和删除分支
+	git checkout main 切换到主分支上
+	git merge login     在main主分支上运行git merge命令，将login分支的代码合并到main主分支上
+删除分支
+	git branch -d 要删除的分支名
+遇到冲突时的分支合并
+	如果两个不同的分支中，对同一个文件进行了不同的修改，此时我们需要手动解决冲突
+将本地分支推送到远程仓库
+	#-u表示把本地分支和远程分支进行关联，只在第一次推送的时候需要带 -u参数
+	git push -u 远程仓库的别名 本地分支名称:远程分支名称
+实际案例
+	git push -u origin payment:pay
+	#如果希望远程分支的名称和本地分支的名称一致，可以对命令进行简化
+	git push -u origin payment
+查看远程仓库中所有的分支列表
+	git remote show 远程仓库的名称
+跟踪远程仓库的分支
+	#从远程仓库把对应的远程分支下载到本地仓库，保持本地分支和远程分支名称相同
+	git checkout 远程分支的名称
+	#示例
+	git checkout pay
+	#从远程仓库中，把对应的远程分支下载到本地仓库，并把下载的本地分支进行重命名
+	git checkout -b 需要更改的本地分支名 远程仓库名/远程分支名
+拉去远程分支的最新的代码
+	#从远程仓库中拉取当前分支最新的代码，保持当前分支代码和远程分支代码一致
+	git pull
+删除远程仓库中的分支
+	#删除远程仓库中指定名称的远程分支
+	git push 远程仓库名 --delete 远程分支名
+	如：git push origin --delete pay
+
+
+git命令合集
+git -v 		查看git版本
+git init 		初始化git仓库
+git add 文件标识	暂存某个文件	文件标识为相对路径
+git add 		暂存所有的文件
+git commit -m '说明注释'	提交产生版本记录    每次提交，把暂存区内容快照份
+git status		查看文件状态 -详细信息
+git status	-s	查看文件状态 -简略信息	第一列是暂存状态，第二列是工作区状态
+git Ls-files		查看暂存区文件列表
+git restore 文件标识	从暂存区恢复到工作区	如果文件标识为.则恢复所有文件
+git --cached 文件标识	从暂存区移除文件	不让git跟踪文件变化
+git log		查看提交记录 -详细信息
+git log --oneline	查看提交记录 -简略信息	版本号  分支指针  提交时说明注释
+git reflog --oneline 	查看完整历史-简略信息
+git reset 版本号	切换版本代码到暂存区和工作区	--soft 模式保留暂存区和工作区原本内容
+					--hard模式不保留暂存区和工作区原本内容
+					--mined模式不保留暂存区，工作区保留
+					默认先覆盖到暂存区，再用暂存区对比覆盖工作区
+git branch 分支名	创建分支
+git branch		查看本地分支
+git branch -d 分支名	删除分支			请确保记录已经合并到别的分支下，再删除分支
+git checkout 分支名	切换分支			
+git checkout -b 分支名	创建并离开切换分支
+git merge 分支名	把分支提交历史记录并合并到当前所在分支
+
+git远程仓库的操作
+git remote add 远程仓库别名 远程仓库地址  别名唯一，地址时 .git结尾的网址
+git remote -v			查看远程仓库地址
+git remote remove 远程仓库别名	删除远程仓库地址
+git pull 远程仓库别名 分支名 		完整写法：git pull 远程仓库别名 远程分支名:本地分支名      等价于git fetch和git merge
+git push 远程仓库别名 分支名		完整写法 ：git push 远程仓库别名 本地分支名:远程分支名 -u 建立通道后可用简写git push
+git pull --rebase 远程仓库名 分支名	合并没有关系的记录
+git clone 远程仓库地址		从0得到一个远程仓库的git仓库到本地使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

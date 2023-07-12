@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视属性</title>
+    <script src="../vue.js"></script>
+</head>
+<!-- 监视属性watch
+1 当监视属性变化时，回调函数自动调用，进行相关的操作
+2 监视的属性必须存在，才能进行监视
+3 监视的两种写法
+1 new vue时传入watch配置
+2 通过vm.$watch监视 -->
+
+<body>
+    <div id="root">
+        <h2>今天天气很{{info}}</h2>
+        <!-- <button v-on:click="changeWeater">切换天气</button> -->
+        <!-- <button @click="changeWeater">切换天气</button>  <!--简写 -->
+        <!-- @xxx="yyy"yyy可以写一些简单的语句 -->
+        <!-- <button @click="isHots = !isHots">切换天气</button> 简写 -->
+
+        <button @click="changeWeater">切换天气</button>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false //阻止vue在启动时生成生产提示
+
+    new Vue({
+        el: "#root",
+        data: {
+            isHots: true
+        },
+        computed: {
+
+            /* // 正常写法
+           info: {
+                get() {
+                    return this.isHots ? '炎热' : '凉爽'
+                }
+            }  */
+
+            // 简写形式
+            info() {
+                return this.isHots ? '炎热' : '凉爽'
+            }
+        },
+
+        // 事件函数
+        /*  methods: {
+             changeWeater() {
+                 this.isHots = !this.isHots
+             }
+         } */
+
+        //监视属性
+        watch: {
+            isHots: {
+                //immediate值为布尔值默认false，该为true即初始化页面时立即调用一下
+                immediate: true,
+
+                //handler什么时候调用？ 当isHots发生改变时调用
+                handler(newvalue, oldvalue) {
+                    console.log("isHots被修改了", newvalue, oldvalue);
+                }
+            }
+        }
+    })
+</script>
+
+</html>

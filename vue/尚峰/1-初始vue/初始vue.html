@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../vue.js"></script>
+    <title>Document</title>
+</head>
+<!--  初始vue
+        想让vue工作，就必须创建一个vue实例，且要传入一个配置对象
+        root容器里的代码依然符合html规范，只不过混入了一些特殊的vue语法
+        root容器里的代码称为【vue模板】
+    注意区分：js表达式和js代码(语句)
+        表达式：一个表达式可以生成一个值，可以放到任何一个需要值的地方
+        js代码(语句)
+            if(){}//for(){}
+    -->
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <h1>插值语法</h1>
+        <h3>hello ,{{name}}</h3>
+        <hr />
+        <h1>指令语法</h1>
+        <!-- 此处v-bind:即给属性绑定vue的属性为值 -->
+        <a v-bind:href="url">点击百度</a>
+        <!-- v-bind可以简写为  :  -->
+        <a :href="url">点击百度2</a>
+
+        <!-- 插值语法管理标签体内容,{{val}},指令语法用于解析标签(包括:标签属性,标签体内容,绑定事件) -->
+    </div>
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false //阻止启动时生成的生成提示
+
+        // 创建vue实例对象
+        const vm = new Vue({
+            el: '#root',//即element，用于指定当前vue实例为哪个容器服务，值即当选选中的id为root的
+            data: {  //data中用于储存数据，数据提供el所指定的容器去使用，值暂时先写成一个对象
+                name: '尚硅谷',
+                url: "http://www.baidu.com"
+            }
+        })
+    </script>
+    <hr>
+    <!-- 准备好一个容器 -->
+    <div id="root1">
+        单向数据绑定：<input type="text" v-bind:value="name"><br>
+        <!-- 简写形式：单向数据绑定：<input type="text"  :value="name"><br> -->
+        <!-- v-model为双向绑定，但是v-model只能用于表单类元素(输入类元素) -->
+        双向数据绑定：<input type="text" v-model:value="name">
+        <!-- 简写形式:双向数据绑定：<input type="text" v-model="name"> -->
+    </div>
+    <script>
+        Vue.config.productionTip = false //阻止启动时生成的生成提示
+
+        new Vue({
+            el: '#root1',
+            data: {
+                name: '尚硅谷'
+            }
+        })
+    </script>
+</body>
+
+</html>

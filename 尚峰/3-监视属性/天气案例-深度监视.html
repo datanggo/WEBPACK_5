@@ -1,81 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>监视属性</title>
     <script src="../vue.js"></script>
-</head>
-<!-- 监视属性watch
-1 当监视属性变化时，回调函数自动调用，进行相关的操作
-2 监视的属性必须存在，才能进行监视
-3 监视的两种写法
-1 new vue时传入watch配置
-2 通过vm.$watch监视 -->
+  </head>
+  <!-- 深度监视
+        1 vue中的watch默认不监视对象内部的改变(一层)
+        2 配置deep:true可以监视对象内部值改变(多层)
+    备注：
+        1 vue自身可以检测对象内部值的改变，但是vue提供的watch默认不可以
+        2 使用watch时根据数据的具体结构，决定是否采用深度监视 -->
 
-<body>
+  <body>
     <div id="root">
-        <h2>今天天气很{{info}}</h2>
-        <!-- <button v-on:click="changeWeater">切换天气</button> -->
-        <!-- <button @click="changeWeater">切换天气</button>  <!--简写 -->
-        <!-- @xxx="yyy"yyy可以写一些简单的语句 -->
-        <!-- <button @click="isHots = !isHots">切换天气</button> 简写 -->
+      <h2>今天天气很{{info}}</h2>
+      <!-- <button v-on:click="changeWeater">切换天气</button> -->
+      <!-- <button @click="changeWeater">切换天气</button>  <!--简写 -->
+      <!-- @xxx="yyy"yyy可以写一些简单的语句 -->
+      <!-- <button @click="isHots = !isHots">切换天气</button> 简写 -->
 
-        <button @click="changeWeater">切换天气</button>
-        <hr>
-        <h3>a的值是：{{number.a}}</h3>
-        <button @click="number.a++">点我让a++</button>
+      <button @click="changeWeater">切换天气</button>
+      <hr />
+      <h3>a的值是：{{number.a}}</h3>
+      <button @click="number.a++">点我让a++</button>
+      <hr />
+      <h3>a的值是：{{number.b}}</h3>
+      <button @click="number.b++">点我让b++</button>
     </div>
-</body>
-<script>
-    Vue.config.productionTip = false //阻止vue在启动时生成生产提示
+  </body>
+  <script>
+    Vue.config.productionTip = false; //阻止vue在启动时生成生产提示
 
-    new Vue({
-        el: "#root",
-        data: {
-            isHots: true,
-            number: {
-                a: 1,
-                b: 1
-            }
+    const vm = new Vue({
+      el: "#root",
+      data: {
+        isHots: true,
+        number: {
+          a: 1,
+          b: 1,
         },
-        computed: {
-
-            /* // 正常写法
+      },
+      computed: {
+        /* // 正常写法
            info: {
                 get() {
                     return this.isHots ? '炎热' : '凉爽'
                 }
             }  */
 
-            // 简写形式
-            info() {
-                return this.isHots ? '炎热' : '凉爽'
-            }
+        // 简写形式
+        info() {
+          return this.isHots ? "炎热" : "凉爽";
+        },
+      },
+
+      // 事件函数
+      methods: {
+        changeWeater() {
+          this.isHots = !this.isHots;
+        },
+      },
+
+      //监视属性
+      watch: {
+        isHots: {
+          //immediate值为布尔值默认false，该为true即初始化页面时立即调用一下
+          immediate: true,
+
+          //handler什么时候调用？ 当isHots发生改变时调用
+          handler(newvalue, oldvalue) {
+            console.log("isHots被修改了", newvalue, oldvalue);
+          },
         },
 
-        // 事件函数
-        /*  methods: {
-             changeWeater() {
-                 this.isHots = !this.isHots
-             }
-         } */
+        //检测a和b的变化
 
-        //监视属性
-        watch: {
-            isHots: {
-                //immediate值为布尔值默认false，该为true即初始化页面时立即调用一下
-                immediate: true,
+        /* //监视多级结构中某个属性的变化
+        "number.a": {
+          handler() {
+            console.log("number修改了");
+          },
+        }, */
+        //监视多级结构中所有属性的变化
+        number: {
+          //immediate值为布尔值默认false，该为true即初始化页面时立即调用一下
+          //   immediate: true,
+          //deep:默认值是false即正常监视，配置值为true时意思即深度监视，可以监视对象内部的值的变化
+          deep: true,
+          handler(newvalue, oldvalue) {
+            console.log("number修改了", newvalue, oldvalue);
+          },
+        },
+        /* //   注意：当监视配置项中只有handler回调函数时可以简写如下
+        number(newvalue, oldvalue) {
+          console.log("number修改了",newvalue, oldvalue);
+        }, */
+      },
+    });
 
-                //handler什么时候调用？ 当isHots发生改变时调用
-                handler(newvalue, oldvalue) {
-                    console.log("isHots被修改了", newvalue, oldvalue);
-                }
-            }
-        }
-    })
-</script>
+    // 当配置监视对象在vue实例外部时的操作
 
+    /* // 正常写法
+    vm.$watch("number", {
+      //immediate值为布尔值默认false，该为true即初始化页面时立即调用一下
+      //   immediate: true,
+      //deep:默认值是false即正常监视，配置值为true时意思即深度监视，可以监视对象内部的值的变化
+      deep: true,
+      handler(newvalue, oldvalue) {
+        console.log("number修改了");
+      },
+    }); */
+
+    /* // 简写形式
+    vm.$watch('number',function(newvalue, oldvalue){
+        console.log("number修改了");
+    }) */
+  </script>
 </html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总结练习vue的监视原理</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>学生信息</h1>
+
+        <button @click="student.age++">年龄+1岁</button><br><br>
+        <button @click="addSex">添加性别属性，默认值：男</button>
+        <button v-if="student.sex" @click="xSex">切换性别</button><br><br>
+        <button>在列表首位添加一个朋友</button><br><br>
+        <button>修改第一个朋友的名字为：张三</button><br><br>
+        <button>添加一个爱好</button><br><br>
+        <button>修改第一个爱好为：开车</button><br><br>
+
+
+        <h3>姓名：{{student.name}}</h3>
+        <h3>年龄：{{student.age}}</h3>
+        <h3 v-if="student.sex">性别：{{student.sex}}</h3>
+        <h3>爱好：</h3>
+        <ul>
+            <li v-for="(itme,index) in student.hobby" :key="index">
+                {{itme}}
+            </li>
+        </ul>
+        <h3>朋友们：</h3>
+        <ul>
+            <li v-for="(itme,index) in student.friends" :key="index">
+                {{itme.name}} --- {{itme.age}}
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    new Vue({
+        el: "#root",
+        data: {
+            fig: 1,
+            student: {
+                name: "tom",
+                age: 18,
+            },
+            hobby: ["抽烟", "喝酒", "打扑克"],
+            friends: [
+                { name: "jerry", age: 35 },
+                { name: "tony", age: 25 }
+            ]
+        },
+        methods: {
+            addSex() {
+                //为对象里添加属性和值，Vue.set(obj,el,val)值一是要添加的对象，值二是添加的属性，值三是添加属性的值
+                Vue.set(this.student, "sex", "男")
+                this.fig = 0;
+            },
+            xSex() {
+                if (this.fig == 1) {
+                    this.fig = 0;
+                    Vue.set(this.student, "sex", "男")
+                } else {
+                    this.fig = 1;
+                    Vue.set(this.student, "sex", "女")
+                }
+            }
+        }
+
+    })
+</script>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非单文件组件</title>
+    <script src="../vue.js"></script>
+</head>
+<!-- 
+        vue中使用组件的三大步骤：
+            一，定义组件(创建组件)
+            二，注册组件
+            三，使用组件(写组件标签)
+        一，如何定义一个组件？
+            使用vue.extend(options)创建，其中options和new Vue(options)时传入的那个options几乎一样，但区别如下
+                1 el不要写，为什么？__最终所有的组件都要经过一个vm的管理，由vm中的el指定服务对象
+                2 data必须写成函数，为什么？__避免组件被复用时，数据存在引用关系
+            备注：使用template可以配置组件结构
+        二，如何注册组件？
+            1 局部注册：靠new Vue的时候传入components选项
+            2 全局注册:靠vue.component("组件名"，组件)
+        三，编写组件标签
+            <school></school>
+ -->
+
+<body>
+    <div id="root">
+        <!-- 第三步：编写组件标签 -->
+        <school></school>
+        <hr>
+        <!-- 第三步：编写组件标签 -->
+        <student></student>
+        <hr>
+        <hello></hello>
+    </div>
+</body>
+<script>
+    Vue.config.productionTip = false
+
+    // 第一步：创建school组件       extend<扩展>
+    const school = Vue.extend({
+        // el: "#root",//组件里没有el配置项，因为最终所有的组件都会被vm支配服务
+        template: `
+            <div>
+                <h2>学习名称：{{schoolName}}</h2>
+                <h2>学习地址：{{address}}</h2>
+                <button @click="showName">点我提示学校名</button>
+            </div>
+        `,
+        data() {
+            return {
+                schoolName: "尚硅谷",
+                address: "北京昌平"
+            }
+        },
+        methods: {
+            showName() {
+                alert(this.schoolName)
+            }
+        },
+    })
+
+    // 第一步：创建student组件       extend<扩展>
+    const student = Vue.extend({
+        // el: "#root",//组件里没有el配置项，因为最终所有的组件都会被vm支配服务
+
+        template: `
+            <div>
+                <h2>学生名称：{{studentName}}</h2>
+                <h2>学生年龄：{{age}}</h2>
+            </div>
+        `,
+        data() {
+            return {
+                studentName: "尚硅谷",
+                age: 18
+            }
+        }
+    })
+
+    // 第一步：创建hello组件
+    const hello = Vue.extend({
+        template: `<div>
+                <h2>你好啊{{name}}</h2>
+            </div>`,
+        data() {
+            return {
+                name: "尚硅谷"
+            }
+        }
+    })
+
+    // 注册组件
+    new Vue({
+        el: "#root",
+        //第二步：注册组件的指令配置项 （局部注册）
+        components: {
+            school: school,
+            student
+        }
+    })
+
+    // 第二部：注册组件    (全局注册)
+    Vue.component("hello", hello)
+
+</script>
+
+</html>

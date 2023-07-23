@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>非单文件组件</title>
+    <script src="../vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <!-- 编写组件标签 -->
+      <!-- <app></app> -->
+    </div>
+  </body>
+  <script>
+    Vue.config.productionTip = false;
+
+    //创建students组件
+    const students = Vue.extend({
+      template: `
+      <div>
+      <h2>学生名称：{{name}}</h2>
+      <h2>学生年龄：{{age}}</h2>
+        </div>`,
+      data() {
+        return {
+          name: "尚硅谷",
+          age: 19,
+        };
+      },
+    });
+
+    //创建school 组件
+    const school = Vue.extend({
+      template: `
+      <div>
+      <h2>学校名称：{{name}}</h2>
+      <h2>学校地址：{{address}}</h2>
+      <students></students>
+        </div>`,
+      data() {
+        return {
+          name: "尚硅谷",
+          address: "北京昌平",
+        };
+      },
+      //把students组件注册到school组件里 （局部注册）
+      components: {
+        students,
+      },
+    });
+
+    //创建hello 组件
+    const hello = Vue.extend({
+      template: `<h1>{{msg}}</h1>`,
+      data() {
+        return { msg: "欢迎来到尚硅谷" };
+      },
+    });
+
+    // 创建app组件，用于管理vm下属所有组件，即vm只管理app组件，app组件管理所有其他组件
+    const app = Vue.extend({
+      // 注意：template模板下只能包含一个根字节目录，即所有内容都有用一个容器包一下
+      template: ` 
+      <div>
+      <school></school>
+      <hello></hello>
+        </div>
+        `,
+      components: {
+        school,
+        hello,
+      },
+    });
+
+    // 创建vm
+    new Vue({
+      template: `<app></app>`,
+      el: "#root",
+      //   注册组件   (局部)
+      components: { app },
+    });
+  </script>
+</html>

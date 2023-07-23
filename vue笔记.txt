@@ -331,9 +331,7 @@ vue中使用组件的三大步骤：
             2 全局注册:靠vue.component("组件名"，组件)
         三，编写组件标签
             <school></school>
-
-
-        几个注意点：
+几个注意点：
             1 关于组件名：
                 一个单词
                     第一种写法(首字母小写)school
@@ -351,11 +349,33 @@ vue中使用组件的三大步骤：
 
             3 一个简写形式
                 const school = Vue.extend(options)可简写为：const school = options
+关于VueComponent:
+            1 school组件本质是一个名为VueComponent的构造函数，并且不是程序员定义的，是Vue.extend生成的
+            2 我们只需要写<school></school>或者<school/>,Vue解析时会帮我们创建school组件的实例对象
+            即Vue帮我们执行的：new VueComponent(options)
+            3 特别注意：每次调用Vue.extend,返回的都是一个全新的VueComponent！！！！
+            4 关于this指向
+                a 组件配置中
+                        data函数，methods中的函数，watch中的函数，computed中的函数 它们的this均是【VueComponent实例对象】
+                b new Vue()配置中：
+                        data函数，methods中的函数，watch中的函数，computed中的函数 它们的this均是【Vue实例对象】
+            5 VueComponent的实例对象，以后简称vc（也可称为：组件实例对象）
+            Vue的实例对象，以后简称vm
+1 一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+2 为什么要有这个关系：让组件实例对象（vc）可以访问到Vue原型上的属性，方法
 
-
-
-
-
+vue cli  即vue脚手架
+	安装全局包   @vue/cli
+	npm install -g @vue/cli
+	切换到你要创建项目的目录，使用命令创建项目
+	vue create xxxx
+	启动项目
+	npm run serve
+注意：
+	如果出现下载缓慢配置npm 淘宝镜像 npm config set registry
+	https://registry.npm.taobao.org
+	
+	vue脚手架隐藏了所有webpack相关的配置，若想查看具体的webpack配置，执行vue inspact > output.js
 
 
 

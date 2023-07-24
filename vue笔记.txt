@@ -491,6 +491,9 @@ CommonJS模块化
     </style>
     <style lang="less">  表示style标签里的都是less语言编译的
     </style>
+<style scoped>  表示style标签里的所有代码仅服务于当前文件，即作用域的原理，组件开发中常用于除app文件外的其他组件内，防止样式名互相影响
+    </style>
+
 npm view webpack versions
 可以快速查找指定包的所有的版本
 

@@ -1,6 +1,13 @@
 <template>
   <ul class="todo-main">
-    <MyItme v-for="(itme, index) in todos" :key="itme.id"> {{ index }}}</MyItme>
+    <!-- 循环todos遍历todos数组，根据数组长度生成每一个itme，并且为它绑定key值为每一项的id值，把遍历出的每一项item传给myitme -->
+    <MyItme
+      v-for="itme in todos"
+      :key="itme.id"
+      :todos="itme"
+      :checkTodo="checkTodo"
+      :delTodo="delTodo"
+    ></MyItme>
   </ul>
 </template>
 
@@ -12,15 +19,8 @@ import MyItme from "./MyItme";
 export default {
   name: "MyList",
   components: { MyItme },
-  data() {
-    return {
-      todos: [
-        { id: "001", title: "抽烟", done: true },
-        { id: "002", title: "喝酒", done: true },
-        { id: "003", title: "开车", done: true },
-      ],
-    };
-  },
+  //接收myheader传过来的数据列表
+  props: ["todos", "checkTodo", "delTodo"],
 };
 </script>
 

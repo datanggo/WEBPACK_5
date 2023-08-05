@@ -624,10 +624,10 @@ npm view webpack versions
         </transition>
     3. 备注：若有多个元素需要过渡，则需要使用：<transition-group>,且每个元素都有指定key值
 
-
-
-
-
+vue-router@3版本支持vue2
+vue-router@4版本支持vue3
+vuex@3版本支持vue2
+vuex@4版本支持vue3
 
 
 

@@ -9,64 +9,19 @@ import Vuex from "vuex"
 // 使用vuex插件
 Vue.use(Vuex)
 
-// 准备actions-用于响应组件中的动作
-const actions = {
-    /*  jia: function () {
-         console.log("actions中的jia被调用了");
-     } */
-    /* jia(context, value) {
-        console.log("####actions中的jia被调用了", context, value);
-        context.commit("JIA", value)
-    },
-    jian(context, value) {
-        context.commit("JIAN", value)
-    }, */
-    jiaOdd(context, value) {
-        // 判断条件放在actions里
-        if (context.state.sum % 2) {
-            context.commit("JIA", value)
-        }
-    },
-    jiaWait(context, value) {
-        setTimeout(() => {
-            context.commit("JIA", value)
-        }, 500)
-    }
-}
+// 引入countAbout组件
+import countAbout from "./countAbout"
 
-// 准备mutations-用于操作数据(state)
-const mutations = {
-    JIA(state, value) {
-        console.log("@@@actions中的JIA被调用了", state, value);
-        state.sum += value
-    },
-    JIAN(context, value) {
-        state.sum -= value
-    }
-}
+// 引入personAbout组件
+import personAbout from "./personAbout"
 
-// 准备state-用于存储数据
-const state = {
-    sum: 0,//当前的和
-}
-
-//准备getters-用于将state中的数据进行加工
-const getters = {
-    bigSum(state) {
-        return state.sum * 10
-    }
-}
 
 // 创建store
 const store = new Vuex.Store({
-    // actions: actions,
-    actions,
-    // mutations: mutations,
-    mutations,
-    // state: state
-    state,
-    // getters:getters,
-    getters,
+    modules: {
+        countAbout: countAbout,
+        personAbout: personAbout
+    }
 })
 
 // 向外暴露对象  //导出store

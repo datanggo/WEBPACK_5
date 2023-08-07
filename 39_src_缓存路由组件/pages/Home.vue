@@ -20,7 +20,10 @@
       </li>
     </ul>
 
-    <keep-alive include="News">
+    <!-- 单个组件 -->
+    <!-- <keep-alive include="News"> -->
+    <!-- 多个组件 -->
+    <keep-alive :include="['News', 'Message']">
       <router-view></router-view>
     </keep-alive>
   </div>

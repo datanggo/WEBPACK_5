@@ -16,9 +16,6 @@ import Detail from "../pages/Detail";
 
 // 创建一个路由器
 const router = new VueRouter({
-  // mode可以设置网址路径默认是hash可改成history
-  // mode: "history",
-  // mode: "hash",
   routes: [
     {
       //命名路由
@@ -46,19 +43,19 @@ const router = new VueRouter({
             title: "新闻"
           },
 
-          /*  //独享路由守卫
-           beforeEnter: (to, from, next) => {
-             console.log("beforeEnter进入之前", to, from)
-             if (to.meta.isAuth) {//判断当前路由是否需要进行全选控制
-               if (localStorage.getItem("school") === "atguigu") {
-                 next()
-               } else {
-                 alert("本地存储的学校名不对，无权限")
-               }
-             } else {
-               next()
-             }
-           } */
+          //独享路由守卫
+          beforeEnter: (to, from, next) => {
+            console.log("beforeEnter进入之前", to, from)
+            if (to.meta.isAuth) {//判断当前路由是否需要进行全选控制
+              if (localStorage.getItem("school") === "atguigu") {
+                next()
+              } else {
+                alert("本地存储的学校名不对，无权限")
+              }
+            } else {
+              next()
+            }
+          }
         },
         {
           name: "xiaoxi",

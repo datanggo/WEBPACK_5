@@ -1,10 +1,10 @@
 <template>
   <ul>
     <!-- 利用params传参的，所有的参数都会挂载到params -->
-    <li>消息编号：{{ id }}</li>
-    <li>消息编号：{{ title }}</li>
+    <!-- <li>消息编号：{{ $route.params.id }}</li> -->
+    <!-- <li>消息编号：{{ $route.params.title }}</li> -->
     <!-- 读取路由props传递的参数 -->
-    <!-- <li>a:{{ id }},b:{{ title }}</li> -->
+    <li>a:{{ id }},b:{{ title }}</li>
   </ul>
 </template>
 

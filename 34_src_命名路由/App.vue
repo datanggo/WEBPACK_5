@@ -11,7 +11,6 @@
           <a class="list-group-item" href="./home.html">Home</a> -->
 
           <!-- vue中借助<router-link>标签实现路由的切换，且可以指定active-class指定激活路由后的样式 -->
-          <!-- 路由对路径的影响，默认是push，如果需要替换上一次的历史记录在router-link标签里添加replace属性 -->
           <router-link
             class="list-group-item"
             active-class="active"

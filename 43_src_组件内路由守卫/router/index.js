@@ -16,9 +16,6 @@ import Detail from "../pages/Detail";
 
 // 创建一个路由器
 const router = new VueRouter({
-  // mode可以设置网址路径默认是hash可改成history
-  // mode: "history",
-  // mode: "hash",
   routes: [
     {
       //命名路由

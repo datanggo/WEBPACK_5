@@ -16,9 +16,6 @@ import Detail from "../pages/Detail";
 
 // 创建一个路由器
 const router = new VueRouter({
-  // mode可以设置网址路径默认是hash可改成history
-  // mode: "history",
-  // mode: "hash",
   routes: [
     {
       //命名路由
@@ -44,21 +41,7 @@ const router = new VueRouter({
           meta: {
             isAuth: true,
             title: "新闻"
-          },
-
-          /*  //独享路由守卫
-           beforeEnter: (to, from, next) => {
-             console.log("beforeEnter进入之前", to, from)
-             if (to.meta.isAuth) {//判断当前路由是否需要进行全选控制
-               if (localStorage.getItem("school") === "atguigu") {
-                 next()
-               } else {
-                 alert("本地存储的学校名不对，无权限")
-               }
-             } else {
-               next()
-             }
-           } */
+          }
         },
         {
           name: "xiaoxi",
@@ -88,7 +71,7 @@ const router = new VueRouter({
   ],
 });
 
-/* //配置路由守卫
+//配置路由守卫
 // 全局前置路由守卫——初始化时和每次路由切换之前被调用
 router.beforeEach((to, from, next) => {
 
@@ -103,6 +86,9 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+
+
 })
 
 // 全局后置路由守卫——初始化时和每次路由切换之后被调用
@@ -110,7 +96,7 @@ router.afterEach((to, from) => {
   console.log("后置路由守卫", to, from);
   // 此处即定义可以跟随页面的变动的title 后面或的即当初始化时显示的title
   document.title = to.meta.title || "测试网页"
-}) */
+})
 
 // 导出/暴露路由模块
 export default router;

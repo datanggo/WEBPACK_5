@@ -8,7 +8,13 @@
         <!-- 跳转路由 并携带params参数 to的对象写法-->
         <router-link
           :to="{
+            //直接使用已经命名了的路由
+            //如果使用用的是params传参，此处不能配置path路径，必须使用name
             name: 'xiangqing',
+            /* params: {
+              id: item.id,
+              title: item.title,
+            },*/
             query: {
               id: item.id,
               title: item.title,
@@ -17,8 +23,6 @@
         >
           {{ item.title }}
         </router-link>
-        <button @click="pushShow(item)">push查看</button>
-        <button @click="repalceShow(item)">replace查看</button>
       </li>
     </ul>
     <hr />
@@ -37,28 +41,6 @@ export default {
         { id: "003", title: "消息003" },
       ],
     };
-  },
-  methods: {
-    pushShow(item) {
-      // 历史记录堆送
-      this.$router.push({
-        name: "xiangqing",
-        query: {
-          id: item.id,
-          title: item.title,
-        },
-      });
-    },
-    // 历史记录替换
-    repalceShow(item) {
-      this.$router.replace({
-        name: "xiangqing",
-        query: {
-          id: item.id,
-          title: item.title,
-        },
-      });
-    },
   },
 };
 </script>

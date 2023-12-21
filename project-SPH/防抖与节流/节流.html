@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
+        integrity="sha256-qXBd/EfAdjOA2FGrGAG+b3YBn2tn5A6bhz+LSgYD96k=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>我是计数器：<span>0</span></h1>
+        <button>点击我计数器++</button>
+    </div>
+
+</body>
+<script>
+    //  节流：在规定的间隔时间范围内不会出伏触发回调，只有大于这个时间间隔才会出大回调，把频繁触发为少量触发
+    //获取节点
+    let span = document.querySelector("span")
+    let button = document.querySelector("button")
+    let count = 0
+
+    // 计数器在1秒内只执行一次  此即为lodash的节流方法
+    button.onclick = _.throttle(function () {
+        count++,
+            span.innerHTML = count
+    }, 5000)
+    // 防抖：用户操作很频繁，但是只执行一次
+    // 节流：用户操作很频繁，但是把很频繁的操作变为少量操作【可以给浏览器有充裕的时间解析代码】
+    // 节流：闭包+延时器
+</script>
+
+</html>

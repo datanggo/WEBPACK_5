@@ -1,7 +1,7 @@
 <template lang="">
     <!-- 商品分类导航 -->
         <div class="type-nav">
-            <div class="container" @mouseleave="leaveIndex">
+            <div class="container" @mouseleave="leaveShow" @mouseenter="enterShow">
                 <h2 class="all">全部商品分类</h2>
                 <nav class="nav">
                     <a href="###">服装城</a>
@@ -13,46 +13,49 @@
                     <a href="###">有趣</a>
                     <a href="###">秒杀</a>
                 </nav>
-                <div class="sort">
-                  <!-- 事件委派给父元素 -->
-                    <div class="all-sort-list2" @click="goSearch">
-                        <div class="item bo" v-for='(c1,index) in categoryList' :key="c1.categoryId" :class="{cur:currentIndex==index}"> 
-                            <h3 @mouseenter="changeIndex(index)"  >
-                              <!-- 路由跳转 -->
-                              <!-- 编程式导航 -->
-                                <!-- <a href="" @click="goSearch">{{c1.categoryName}}</a> -->
-                                <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-                                <!-- 声明式导航 -->
-                                <!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
-                            </h3>
-                            <!-- //二级分类和三级分类 -->
-                            <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block' : 'none'}">
-                                <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
-                                    <dl class="fore">
-                                        <dt>
-                                            <!-- 路由跳转 -->
-                                            <!-- 编程式导航 -->
-                                            <!-- <a href="" @click="goSearch">{{c2.categoryName}}</a> -->
-                                            <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
-                                            <!-- 声明式导航 -->
-                                            <!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
-                                        </dt>
-                                        <dd>
-                                            <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                                                <!-- 路由跳转 -->
-                                                <!-- 编程式导航 -->
-                                                <!-- <a href="" @click="goSearch">{{c3.categoryName}}</a> -->
-                                                <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
-                                                <!-- 声明式导航 -->
-                                                <!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
-                                            </em>
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- 过渡动画 -->
+                <transition name="sort">
+                  <div class="sort" v-show="show">
+                    <!-- 事件委派给父元素 -->
+                      <div class="all-sort-list2" @click="goSearch">
+                          <div class="item bo" v-for='(c1,index) in categoryList' :key="c1.categoryId" :class="{cur:currentIndex==index}"> 
+                              <h3 @mouseenter="changeIndex(index)"  >
+                                <!-- 路由跳转 -->
+                                <!-- 编程式导航 -->
+                                  <!-- <a href="" @click="goSearch">{{c1.categoryName}}</a> -->
+                                  <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                                  <!-- 声明式导航 -->
+                                  <!-- <router-link to="/search">{{c1.categoryName}}</router-link> -->
+                              </h3>
+                              <!-- //二级分类和三级分类 -->
+                              <div class="item-list clearfix" :style="{display:currentIndex==index ? 'block' : 'none'}">
+                                  <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
+                                      <dl class="fore">
+                                          <dt>
+                                              <!-- 路由跳转 -->
+                                              <!-- 编程式导航 -->
+                                              <!-- <a href="" @click="goSearch">{{c2.categoryName}}</a> -->
+                                              <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                                              <!-- 声明式导航 -->
+                                              <!-- <router-link to="/search">{{c2.categoryName}}</router-link> -->
+                                          </dt>
+                                          <dd>
+                                              <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
+                                                  <!-- 路由跳转 -->
+                                                  <!-- 编程式导航 -->
+                                                  <!-- <a href="" @click="goSearch">{{c3.categoryName}}</a> -->
+                                                  <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                                                  <!-- 声明式导航 -->
+                                                  <!-- <router-link to="/search">{{c3.categoryName}}</router-link> -->
+                                              </em>
+                                          </dd>
+                                      </dl>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </transition>
             </div>
         </div>
 </template>
@@ -71,12 +74,19 @@ export default {
     return {
       // 存储用户鼠标移动到哪一个一级分类current
       currentIndex: -1,
+      show: true,
     };
   },
   //   组件挂载完毕：可以向服务器发请求，获取服务器的数据，展示数据
   mounted() {
-    // 通知Vuex发请求，获取数据，存储于仓库当中
+    /*  // // 通知Vuex发请求，获取数据，存储于仓库当中
     this.$store.dispatch("categoryList");
+ */
+    //当组件挂载完毕，让show属性变为false
+    //如果不是Home路由组件，将typeNav进行隐藏
+    if (this.$route.path != "/home") {
+      this.show = false;
+    }
   },
   //ji计算属性
   computed: {
@@ -103,10 +113,10 @@ export default {
       this.currentIndex = index;
     }, 50),
 
-    // 一级分类鼠标移出的回调
-    leaveIndex() {
-      this.currentIndex = -1;
-    },
+    // // 一级分类鼠标移出的回调
+    // leaveIndex() {
+    //   this.currentIndex = -1;
+    // },
 
     // 进行路由跳转的方法
     goSearch(event) {
@@ -135,10 +145,28 @@ export default {
         } else if (category3id) {
           query.category3Id = category3id;
         }
-        // 整理完整参数
-        location.query = query;
-        // 路由跳转
-        this.$router.push(location);
+        // 判断：如果路由跳转的时候带有params参数，要传递过去
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          // 整理完整参数
+          location.query = query;
+          // 路由跳转
+          this.$router.push(location);
+        }
+      }
+    },
+
+    // 当鼠标移入的时候，让商品分类进行展示
+    enterShow() {
+      this.show = true;
+    },
+    //当鼠标离开的时候，让商品分类列表进行隐藏
+    leaveShow() {
+      // 一级分类鼠标移出的回调
+      this.currentIndex = -1;
+      // 让商品分类列表进行隐藏,判断当前路由是不是在home页面
+      if (this.$route.path != "/home") {
+        this.show = false;
       }
     },
   },
@@ -264,6 +292,22 @@ export default {
           background: #e1251b;
         }
       }
+    }
+
+    // 过渡动画的样式
+    // 过渡动画开始状态（进入）
+    .sort-enter {
+      height: 0;
+      // transform: rotate(0deg);
+    }
+    // 过渡动画的结束状态
+    .sort-enter-to {
+      height: 461px;
+      // transform: rotate(360deg);
+    }
+    // 定义动画的时间，速率
+    .sort-enter-active {
+      transition: all 0.5s linear;
     }
   }
 }

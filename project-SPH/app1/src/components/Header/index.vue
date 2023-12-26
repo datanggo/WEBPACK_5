@@ -84,19 +84,22 @@ export default {
       }); */
       // 4：路由组件能不能传递props数据？
       // 可以的：有三种写法
-      this.$router.push(
-        {
+      if (this.$route.query) {
+        //代表路径当中如果有query参数，把query参数也带过去
+        let location = {
           name: "search",
           params: { keyword: this.keyword || undefined },
-          query: { k: this.keyword.toUpperCase() },
-        }
+          // query: { k: this.keyword.toUpperCase() },
+        };
+        location.query = this.$route.query;
+        this.$router.push(location);
         /*  // 传递成功的回调
         () => {},
         // 传递失败的回调
         (error) => {
           console.log(error);
         } */
-      );
+      }
     },
   },
 };

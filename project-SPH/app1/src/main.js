@@ -18,6 +18,13 @@ import router from '@/router'
 // 引入仓库
 import store from '@/store'
 
+
+// 引入MockServe.js -----mock数据
+import '@/mock/mockServe'
+
+// 引入swiper样式
+import 'swiper/css/swiper.min.css'
+
 new Vue({
   render: h => h(App),
   // 注册路由：地下的写法是key和value一致省略value

@@ -6,8 +6,8 @@
                     <!--banner轮播-->
                     <div class="swiper-container" id="mySwiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <img src="./images/banner1.jpg" />
+                            <div class="swiper-slide" v-for="(carousel,index) in bannerList" :key="carousel.id">
+                                <img :src="carousel.imgUrl" />
                             </div>
                             
                         </div>
@@ -102,8 +102,97 @@
         </div>
 </template>
 <script>
+// 引入mapState获取仓库中关于轮播图的数据
+import { mapState } from "vuex";
+
+// 引入swiper轮播图插件
+import Swiper from "swiper";
+
 export default {
   name: "ListContainer",
+  mounted() {
+    // 派发action：通知vuex发起ajax请求，将数据存储到仓库中
+    this.$store.dispatch("getBannerList");
+    // 在new Swiper实例之前，页面中结构必须要有【现在老师把new Swiper实例放到mounted这里发现不行】
+    // 因为dispatch当中涉及到异步语句，导致v-for遍历的时候结构还没有完整，所以不行
+    // setTimeout(() => {
+    //   // 初始化swiper
+    //   var mySwiper = new Swiper(".swiper-container", {
+    //     // direction: 'vertical', // 垂直切换选项
+    //     loop: true, // 循环模式选项
+
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //       // 如果需要分页器,即点击小球的时候切换图片
+    //       clickable: true,
+    //     },
+
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+
+    //     // 如果需要滚动条
+    //     scrollbar: {
+    //       el: ".swiper-scrollbar",
+    //     },
+    //   });
+    // }, 2000);
+  },
+
+  // 计算属性，计算从vuex中映射出来的数据
+  computed: {
+    ...mapState({
+      // 传入state仓库数据
+      bannerList: (state) => {
+        // 返回state仓库中的home小仓库里的bannerlist数据
+        return state.home.bannerList;
+      },
+    }),
+  },
+
+  // 监视属性
+  watch: {
+    // 监听bannerList数据的变化：因为这条数据发生过变化，由一个空数组变为数组里面有轮播图的数据
+    bannerList: {
+      handler(newvalue, oldvalue) {
+        // 通过watch监听bannerList数据的变化，变化之后执行回调，为new swiper
+        // 如果执行了handler这个回调，代表数组实例身上这个属性的属性已经有了，即不是一个空数组了
+        // 但是这个函数执行：只能保证bannerList数据已经有了，但是你没办法保证v-for已经执行结束了
+        // v-for执行完毕，才有结构【你现在在watch是没办法保证的】
+        // 初始化swiper;
+
+        // $nextTick:在下次DOM更新循环结束之后执行延迟回调，在修改数据之后立即使用这个方法，获取更新后的DOM
+        this.$nextTick(() => {
+          // 当你执行这个回调的时候，保证服务器数据回来了，v-for执行完毕了【一定轮播图的结构一定有】
+          var mySwiper = new Swiper(".swiper-container", {
+            // direction: 'vertical', // 垂直切换选项
+            loop: true, // 循环模式选项
+
+            // 如果需要分页器
+            pagination: {
+              el: ".swiper-pagination",
+              // 如果需要分页器,即点击小球的时候切换图片
+              clickable: true,
+            },
+
+            // 如果需要前进后退按钮
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+
+            // 如果需要滚动条
+            scrollbar: {
+              el: ".swiper-scrollbar",
+            },
+          });
+        });
+      },
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

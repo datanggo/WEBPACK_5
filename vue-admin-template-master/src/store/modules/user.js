@@ -28,19 +28,35 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
+  // 在处理登录的业务
+  async login({ commit }, userInfo) {
+    // 解构出用户名与密码
     const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    /*  return new Promise((resolve, reject) => {
+       login({ username: username.trim(), password: password }).then(response => {
+         const { data } = response
+         commit('SET_TOKEN', data.token)
+         setToken(data.token)
+         resolve()
+       }).catch(error => {
+         reject(error)
+       })
+     }) */
+
+    //  自己改进的
+    let result = await login({ username: username.trim(), password: password })
+    // console.log(result);
+    // 注意：当前登录的请求现在使用的是mock数据code是20000
+    if (result.code == 20000) {
+      // 提交mutations处理state
+
+      commit('SET_TOKEN', result.data.token)
+      // 本地化存储token
+      setToken(result.data.token)
+      return 'ok'
+    } else {
+      return Promise.reject(new Error("faile"))
+    }
   },
 
   // get user info

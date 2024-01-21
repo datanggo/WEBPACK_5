@@ -1,27 +1,54 @@
 <template lang="">
-    <div>
-        <!-- 三级联动的全局组件 -->
-        <!-- 
+  <div>
+    <!-- 三级联动的全局组件 -->
+    <!-- 
            :inline :表示此表单为行内表单，一行可以放置多个表单元素
          -->
-        <el-form :inline="true" class="demo-form-inline" :model="cForm">
-            <el-form-item label="一级分类">
-                <el-select placeholder="请选择" v-model="cForm.category1Id" @change='handler1'>
-                <el-option :label="c1.name" :value="c1.id" v-for="(c1,index) in list1" :key="c1.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="二级分类">
-                <el-select placeholder="请选择" v-model="cForm.category2Id" @change='handler2'>
-                <el-option :label="c2.name" :value="c2.id" v-for="(c2,index) in list2" :ket="c2.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="三级分类">
-                <el-select placeholder="请选择" v-model="cForm.category3Id" @change='handler3'>
-                <el-option :label="c3.name" :value="c3.id" v-for="(c3,index) in list3" :key="c3.id"></el-option>
-                </el-select>
-            </el-form-item> 
-        </el-form>
-    </div>
+    <el-form :inline="true" class="demo-form-inline" :model="cForm">
+      <el-form-item label="一级分类">
+        <el-select
+          placeholder="请选择"
+          v-model="cForm.category1Id"
+          @change="handler1"
+        >
+          <el-option
+            :label="c1.name"
+            :value="c1.id"
+            v-for="(c1, index) in list1"
+            :key="c1.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="二级分类">
+        <el-select
+          placeholder="请选择"
+          v-model="cForm.category2Id"
+          @change="handler2"
+        >
+          <el-option
+            :label="c2.name"
+            :value="c2.id"
+            v-for="(c2, index) in list2"
+            :ket="c2.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="三级分类">
+        <el-select
+          placeholder="请选择"
+          v-model="cForm.category3Id"
+          @change="handler3"
+        >
+          <el-option
+            :label="c3.name"
+            :value="c3.id"
+            v-for="(c3, index) in list3"
+            :key="c3.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 <script>
 export default {
@@ -61,8 +88,17 @@ export default {
 
     // 一级分类发select事件回调，当选中一级分类的某一项时触发
     async handler1() {
+      // 每次发生变化的时候先清除在上一次的数据
+      this.list2 = [];
+      this.list3 = [];
+      this.cForm.category2Id = "";
+      this.cForm.category3Id = "";
+
       // 解构出一级分类的id
       const { category1Id } = this.cForm;
+      // 把获取到的id传递给父组件
+      this.$emit("getCategoryId", { categoryId: category1Id, level: 1 });
+
       //通过一级分类的id获取到二级分类的数据
       let result = await this.$API.attr.reqCategory2List(category1Id);
       if (result.code == 200) {
@@ -72,8 +108,16 @@ export default {
 
     // 二级分类发select事件回调，当选中一级分类的某一项时触发
     async handler2() {
-      // 解构出一级分类的id
+      // 每次发生变化的时候先清除在上一次的数据
+      this.list3 = [];
+      this.cForm.category3Id = "";
+
+      // 解构出二级分类的id
       const { category2Id } = this.cForm;
+
+      // 把获取到的id传递给父组件
+      this.$emit("getCategoryId", { categoryId: category2Id, level: 2 });
+
       //通过一级分类的id获取到二级分类的数据
       let result = await this.$API.attr.reqCategory3List(category2Id);
       if (result.code == 200) {
@@ -81,9 +125,13 @@ export default {
       }
     },
     // 三级分类发select事件回调，当选中一级分类的某一项时触发
-    handler3() {},
+    handler3() {
+      // 解构出三级分类的id
+      const { category3Id } = this.cForm;
+      // 把获取到的id传递给父组件
+      this.$emit("getCategoryId", { categoryId: category3Id, level: 3 });
+    },
   },
 };
 </script>
-<style lang="">
-</style>
+<style lang=""></style>

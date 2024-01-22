@@ -30,7 +30,7 @@ export const reqAttrList = (category1Id, category2Id, category3Id) => {
 
 // 添加属性与属性值的接口
 // POST /admin/product/saveAttrInfo
-export const reqAddAttr = (data) =>
+export const reqAddOrUpdataAttr = (data) =>
   request({ url: "/admin/product/saveAttrInfo", method: "post", data });
 /* 
 需要携带的参数

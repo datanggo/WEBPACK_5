@@ -44,6 +44,11 @@ import CategorySelect from "@/components/CategorySelect"
 // 注册组件
 Vue.component(CategorySelect.name, CategorySelect)
 
+// 引入HintButton组件注册为全局组件
+import HintButton from "@/components/HintButton"
+// 注册为全局组件名称为“HintButton.name”，从HintButton组件注册
+Vue.component(HintButton.name, HintButton)
+
 new Vue({
   el: '#app',
   router,

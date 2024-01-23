@@ -4,7 +4,7 @@
       <!-- 三级联动已经是全局组件了，可以直接使用 -->
       <CategorySelect
         @getCategoryId="getCategoryId"
-        :show="!show"
+        :show="scene!=0"
       ></CategorySelect>
     </el-card>
     <el-card>
@@ -99,7 +99,6 @@ export default {
       // 三级的id
       category3Id: "",
       // 控制三级联动的可操作性
-      show: true,
 
       page: 1, //分页器当前第几页
       limit: 3, //每一页展示多少条数据
@@ -164,7 +163,10 @@ export default {
     // 添加spu按钮的回调
     addSpu() {
       // console.log(11);
+      // 切换场景为1
       this.scene = 1;
+      // 通知子组件SpuForm发请求---两个
+      this.$refs.spu.addSpuData(this.category3Id);
     },
 
     // 修改某一个spu
@@ -177,9 +179,17 @@ export default {
     },
 
     // 自定义事件的回调  spu取消按钮的回调
-    changeScene(scene) {
+    changeScene({ scene, flag }) {
+      // flag是为了区分是添加还是修改
       // 切换结构
       this.scene = scene;
+      // 子组件通知父组件修改场景后需要再次获取数据展示
+      // 再次获取最新的列表
+      if (flag == "修改") {
+        this.getSpuList(this.page);
+      } else {
+        this.getSpuList();
+      }
     },
   },
   // 注册子组件

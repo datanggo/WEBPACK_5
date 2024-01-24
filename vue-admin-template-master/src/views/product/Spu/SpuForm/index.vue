@@ -9,7 +9,7 @@
         <el-select placeholder="请选择品牌" v-model="spu.tmId">
           <el-option
             :label="tm.tmName"
-            value="value"
+            :value="tm.id"
             v-for="(tm, index) in tradeMarkList"
             :key="tm.id"
           ></el-option>
@@ -286,10 +286,11 @@ export default {
       // 携带的参数:对于图片,需要携带imageName和imageUrl字段
       this.spu.spuImageList = this.spuImageList.map((item) => {
         return {
-          imageName: item.name,
-          imageUrl: (item.response && item.response.data) || item.url,
+          imgName: item.name,
+          imgUrl: (item.response && item.response.data) || item.url,
         };
       });
+      // console.log(this.spu);
       // 发请求
       let result = await this.$API.spu.reqAddOrUpdataSpu(this.spu);
       if (result.code == 200) {
@@ -302,11 +303,14 @@ export default {
           flag: this.spu.id ? "修改" : "添加",
         });
       }
+
+      // 清除上一次的数据
+      Object.assign(this._data, this.$options.data());
     },
 
     // 点击添加按钮时发的请求
     async addSpuData(category3Id) {
-      console.log(category3Id);
+      // console.log(category3Id);
       // 添加spu的时候收集三级分类的id
       this.spu.category3Id = category3Id;
       //   获取品牌的信息

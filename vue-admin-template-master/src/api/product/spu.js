@@ -43,7 +43,32 @@ export const reqAddOrUpdataSpu = (spuInfo) => {
     // 如果携带的没有参数带有id-----添加spu
     return request({ url: "/admin/product/saveSpuInfo", method: "post", data: spuInfo })
   }
-
 }
 
+// 删除spu
+// DELETE /admin/product/deleteSpu/{spuId}
+export const reqDeleteSpu = (spuId) => request({ url: `/admin/product/deleteSpu/${spuId}`, method: "delete" })
 
+
+// 获取图片的接口
+// GET /admin/product/spuImageList/{spuId}
+export const reqSpuImageList1 = (spuId) => request({ url: `/admin/product/spuImageList/${spuId}`, method: "get" })
+
+// 获取销售属性的列表
+// GET /admin/product/spuSaleAttrList/{spuId}
+export const reqSaleAttrList = (spuId) => request({ url: `/admin/product/spuSaleAttrList/${spuId}`, method: "get" })
+
+// 获取平台属性信息的接口
+// GET /admin/product/attrInfoList/{category1Id}/{category2Id}/{category3Id}
+export const reqAttrInfoList = (category1Id, category2Id, category3Id) => request({ url: `/admin/product/attrInfoList/${category1Id}/${category2Id}/${category3Id}`, method: "get" })
+
+
+// 添加SKU
+// POST /admin/product/saveSkuInfo
+export const reqAddSku = (skuInfo) => {
+  return request({ url: "/admin/product/saveSkuInfo", method: "post", data: skuInfo })
+}
+
+// 获取sku列表数据的接口
+// GET /admin/product/findBySpuId/{spuId}
+export const reqSkuList = (spuId) => request({ url: `/admin/product/findBySpuId/${spuId}`, method: "get" })

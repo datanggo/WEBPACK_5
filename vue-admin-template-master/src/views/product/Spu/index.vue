@@ -34,6 +34,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 title="添加SKU"
+                @click="addSku(row)"
               ></hint-button>
               <hint-button
                 type="warning"
@@ -46,14 +47,18 @@
                 type="info"
                 icon="el-icon-info"
                 size="mini"
-                title="查看当前类所有的实例"
+                title="查看当前spu的sku列表"
+                @click="handler(row)"
               ></hint-button>
-              <hint-button
+              <el-popconfirm title="确定删除吗？"  @onConfirm="deleteSpu(row)">
+                <hint-button
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
                 title="删除SPU"
+                slot="reference"
               ></hint-button>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -79,8 +84,22 @@
         @changeScene="changeScene"
         ref="spu"
       ></SpuForm>
-      <SkuForm v-show="scene == 2"></SkuForm>
+      <SkuForm v-show="scene == 2" ref="sku" @changeScenes="changeScenes"></SkuForm>
     </el-card>
+<el-dialog :title="`${spu.spuName}的SKU列表`" :visible.sync="dialogTableVisible" :before-close="close">
+  <!-- table展示sku列表的数据 -->
+  <el-table :data="skuList" style="width:100%" border v-loading="loading">
+    <el-table-column prop="skuName" label="名称" width="width"></el-table-column>
+    <el-table-column prop="price" label="价格" width="width"></el-table-column>
+    <el-table-column prop="weight" label="重量" width="width"></el-table-column>
+    <el-table-column label="默认图片" width="width">
+      <!-- 作用域插槽父组件决定子组件的样式和结构 -->
+      <template slot-scope="{row,$index}">
+        <img :src="row.skuDefaultImg" style="width:100px;height:100px">
+      </template>
+    </el-table-column>
+  </el-table>
+</el-dialog>
   </div>
 </template>
 <script>
@@ -105,6 +124,14 @@ export default {
       records: [], //spu列表的数据
       total: 0, //服务器一共需要展示数据的条数
       scene: 0, //代表展示隐藏面板的方式 0 代表展示SPU列表数据   1  添加SPU||修改SPU    2 代表添加SKU
+
+      // 控制查看SKU列表的显示与隐藏
+      dialogTableVisible: false,
+      // 存储点击后收到的spu
+      spu: {},
+      skuList: [], //存储的是sku列表的数据
+      // 加载效果
+      loading:true
     };
   },
   // 方法
@@ -188,9 +215,61 @@ export default {
       if (flag == "修改") {
         this.getSpuList(this.page);
       } else {
+        // 再次获取spu列表的数据
         this.getSpuList();
       }
     },
+
+    // 删除spu按钮的操作
+    async deleteSpu(row) {
+      // 发请求
+      let result = await this.$API.spu.reqDeleteSpu(row.id);
+      if (result.code == 200) {
+        this.$message({ type: "success", message: "删除成功" });
+        // 再次获取spu列表的数据
+        // this.records.length > 1 ? this.page : this.page - 1
+        // 如果当前页spu的个数大于1留在当前页，如果小于1返回上一页
+        this.getSpuList(this.records.length > 1 ? this.page : this.page - 1);
+      }
+    },
+
+    // 添加sku按钮的回调
+    addSku(row) {
+      // 切换场景
+      this.scene = 2;
+      //父组件调用子组件的方法，让子组件发请求-----三个请求
+      this.$refs.sku.getData(this.category1Id, this.category2Id, row);
+    },
+
+    // SKUForm通知父组件切换场景的自定义回调
+    changeScenes(scene) {
+      this.scene = scene;
+    },
+
+    // 查看sku按钮的回调
+    async handler(spu) {
+      // 把当前点击的这个spu存储到数据中
+      this.spu = spu;
+      // 当点击按钮的时候显示对话框
+      this.dialogTableVisible = true;
+      //获取sku列表的数据进行展示
+      let result = await this.$API.spu.reqSkuList(spu.id);
+      if (result.code == 200) {
+        this.skuList = result.data;
+        // 当服务器的数据回来之后关闭loading效果
+        this.loading = false
+      }
+    },
+
+    // 关闭对话框的回调
+    close(done){
+      // loading属性再次变为真
+       this.loading = true
+      //  清除SKU列表的数据
+      this.skuList = []
+      // done关闭对话框
+      done()
+    }
   },
   // 注册子组件
   components: {

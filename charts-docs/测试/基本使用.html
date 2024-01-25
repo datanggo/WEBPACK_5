@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="600" height="400"></canvas>
+</body>
+<script>
+    // 获取canvas
+    let canvas = document.querySelector("canvas")
+    // 获取画布的笔【上下文】
+    let ctx = canvas.getContext('2d')
+    // 绘制线段
+    // console.log(ctx);
+    // moveTo():绘制线段的起点的设置
+    ctx.moveTo(100, 100)
+    // 其他点的位置，可以有多个
+    ctx.lineTo(100, 200)
+    ctx.lineTo(200, 100)
+    // fillStyle可以设置填充绘制图像的颜色
+    ctx.fillStyle = "red"
+    // fill()调用此方法才能执行定义颜色的命令
+    ctx.fill()
+    // 设置绘制图线的线段的颜色
+    ctx.strokeStyle = 'purple'
+    // lineWidth设置线宽
+    ctx.lineWidth = "5"
+    // closePath()这个方法可以把起点和最后一个其他点链接在一起
+    ctx.closePath()
+    // stroke()画的意思，在画完之后需要调用此方法才能显示
+    // 注意：stroke()一定是要在最后的时候调用，不然不会显示效果
+    ctx.stroke()
+    //**********************************************************************************************
+    // 绘制矩形
+    // 第一种矩形没办法设置颜色
+    // 绘制矩形的第一种方式:参数为x,y,w,h
+    ctx.strokeRect(50, 50, 50, 50)
+    // 第二种方式绘制矩形:参数为x,y,w,h
+    // 填充的颜色可以替换
+    // 绘制图形之前设置填充颜色
+    ctx.fillStyle = "cyan"
+    ctx.fillRect(0, 0, 50, 50)
+    //**********************************************************************************************
+    // 绘制圆形
+    ctx.beginPath()
+    // 绘制圆形的方法:参数圆心的X和Y,半径R,起始的弧度,结束的弧度,是否逆时针绘制|||360 = 2 * PT
+    ctx.arc(200, 200, 50, 0, 2 * Math.PI, true)
+    // 设置填充的颜色
+    ctx.fillStyle = 'red'
+    ctx.fill()
+    // lineWidth设置线宽
+    ctx.lineWidth = "1"
+    // 绘制圆形
+    ctx.stroke()
+    // **********************************************************************************************
+    // 清除画布---整个选中区域被清除
+    ctx.clearRect(0, 0, 150, 150)
+    ctx.clearRect(600, 400, -400, -200)
+    // 设置文字的大小
+    ctx.font = "20px 宋体"
+    ctx.fillStyle = "blue"
+    // 绘制文字:参数:显示的文字,显示的起始位置
+    ctx.fillText("数据可视化", 250, 100)
+</script>
+
+</html>

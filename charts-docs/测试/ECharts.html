@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入ECharts依赖包 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div {
+            width: 800px;
+            height: 400px;
+        }
+
+        .div1 {
+            width: 800px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 一个基于 JavaScript 的开源可视化图表库 -->
+    <!-- 准备一个容器，容器就是显示图表的区域 -->
+    <div class="div"></div>
+    <div class="div1"></div>
+</body>
+<script>
+    // 基于准备好的DOM初始化ECharts实例即init
+    // 获取dom节点
+    let dom = document.querySelector(".div")
+    // 初始化echarts
+    let Mycharts = echarts.init(dom)
+    // 指定图表的配置项和数据
+    Mycharts.setOption({
+        // 图表的标题
+        title: {
+            // 主标题
+            text: "数据可视化",
+            // 子标题
+            subtext: "echarts的基本的使用",
+            // 主标题的颜色
+            textStyle: {
+                color: "blue"
+            },
+            // 设置标题的位置
+            left: "center"
+        },
+        // X轴的配置项
+        xAxis: {
+            // 数据
+            data: ['衣服', '直播', '电影', '游戏']
+        },
+        // Y轴的配置项
+        yAxis: {
+            // 是否显示y轴轴线
+            axisLine: {
+                show: true
+            },
+            // 显示坐标轴刻度
+            axisTick: {
+                show: true
+            }
+        },
+        // 系列的设置，绘制什么样类型的图标，已经数据的展示都是在这里展示
+        series: [
+            {
+                // 图标类型的设置-bar柱状图-line折线图-pie饼图
+                type: 'bar',
+                // 图标的数据
+                data: [10, 20, 30, 40],
+                //颜色的设置
+                color: "red"
+            }
+        ]
+    })
+
+
+    // 展示多个图表
+    // 获取dom节点
+    let dom1 = document.querySelector(".div1")
+    // 初始化echarts
+    let Mycharts1 = echarts.init(dom1)
+    Mycharts1.setOption({
+        title: {
+            // 主标题
+            text: "折线图",
+            left: "center",
+            textStyle: {
+                color: "red"
+            },
+            // 子标题
+            subtext: "echarts实例二",
+            subtextStyle: {
+                color: "cyan"
+            }
+        },
+        xAxis: {
+            data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+        },
+        yAxis: {},
+        // 图标的类型与数据
+        series: [
+
+
+            {
+                type: 'bar',
+                data: [5, 10, 8, 35, 90, 15, 26],
+                color: "cyan"
+            },
+            // 一个容器显示多个图标
+            {
+                type: 'line',
+                data: [10, 20, 15, 44, 100, 19, 30],
+                color: "blue"
+            },
+            {
+                type: 'line',
+                data: [30, 50, 45, 84, 50, 20, 40],
+                color: "red"
+            },
+            // 饼图
+            {
+                type: "pie",
+                // 饼图可以显示文字但是写法如下,需要有name属性
+                data: [
+                    {
+                        value: 10,
+                        name: "x"
+                    },
+                    {
+                        value: 20,
+                        name: "y"
+                    },
+                    {
+                        value: 50,
+                        name: "z"
+                    },
+                    {
+                        value: 30,
+                        name: "i"
+                    }
+                ],
+                // 设置宽高
+                width: 150,
+                height: 150,
+                // 设置位置
+                left: 600,
+                //饼图圆的半径
+                radius: 25
+            }
+        ]
+    })
+</script>
+
+</html>

@@ -44,6 +44,7 @@ module.exports = {
     // before: require('./mock/mock-server.js')
 
     // 配置代理，解决跨域问题
+    // proxy
     proxy: {
       '/dev-api': {
         // target: 'http://39.98.123.211:8170',
@@ -51,6 +52,9 @@ module.exports = {
         pathRewrite: { '^/dev-api': '' },
       },
     },
+    // 开启mock的数据
+
+    after: require("./mock/mock-server.js"),
 
   },
   configureWebpack: {

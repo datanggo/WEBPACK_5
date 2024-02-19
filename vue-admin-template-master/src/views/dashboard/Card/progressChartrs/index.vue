@@ -16,45 +16,37 @@ export default {
       xAxis: {
         // 隐藏x轴
         show: false,
-        type: "category",
+        // 最小值和最大值的设置
+        min: 0,
+        max: 100,
       },
       yAxis: {
         // 隐藏y轴
         show: false,
+        // 均分
+        type: "category",
       },
       // 系列
       series: [
         {
-          type: "line",
-          data: [10, 7, 33, 12, 48, 9, 29, 10, 44],
-          // 拐点的样式的设置
-          itemStyle: {
-            opacity: 0,
+          type: "bar",
+          data: [78],
+          // 设置柱状图的宽度
+          barWidth: "10px",
+          color: "yellowgreen",
+          // 设置背景颜色可见
+          showBackground: true,
+          // 设置背景颜色的样式
+          backgroundStyle: {
+            color: "#eee",
           },
-          // 线条的样式
-          lineStyle: {
-            color: "purple",
-          },
-          // 区域填充样式
-          areaStyle: {
-            color: {
-              type: "linear",
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [
-                {
-                  offset: 0,
-                  color: "purple",
-                },
-                {
-                  offset: 1,
-                  color: "#fff",
-                },
-              ],
-              global: false,
-            },
+          // 文本的设置
+          label: {
+            show: true,
+            //文字的内容
+            formatter: "|",
+            // 文字的位置
+            position: "right",
           },
         },
       ],

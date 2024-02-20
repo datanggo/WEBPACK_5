@@ -9,7 +9,10 @@ module.exports = {
         //__dirname nodejs的变量，代表当前文件的文件夹目录
         path: path.resolve(__dirname, "dist"),//绝对路径
         // 入口文件打包输出的 文件名
-        filename: 'static/js/main.js'
+        filename: 'static/js/main.js',
+        // 打包时自动清空上一次打包结果
+        // 在打包前将dist目录清空再进行打包
+        clean: true,
     },
     //加载器
     module: {
@@ -55,10 +58,10 @@ module.exports = {
                     'styl-loader',//将less编译成css文件
                 ]
             },
-            // 处理图片的loader
+            // 处理图片资源的配置
             {
                 test: /\.(png|jpe?g|gif|webp|svg)$/,
-                type: "asset",
+                type: "asset",  //会转换成base64
                 parser: {
                     dataUrlCondition: {
                         // 一般就是小于10kb的图片会转换成base64
@@ -70,6 +73,16 @@ module.exports = {
                     // 生成输出的图片名称
                     // [hash:10]   表示hash值取前10位
                     filename: "static/images/[hash:10][ext][query]",
+                }
+            },
+
+            // 处理字体文件
+            {
+                test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
+                type: "asset/resource",
+                generator: {
+                    // [hash:10]   表示hash值取前10位
+                    filename: "static/media/[hash:10][ext][query]",
                 }
             },
         ],

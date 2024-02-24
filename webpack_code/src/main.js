@@ -7,5 +7,7 @@ import "./less/index.less"
 // 引入字体图标
 import "./css/iconfont.css"
 
+// var result = count(2, 1)
 console.log(count(2, 1));
-console.log(sum(1, 2, 3, 4));
+// console.log(count(2, 1));
+console.log(sum(1, 2, 3, 4, 5, 6));

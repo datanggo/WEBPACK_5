@@ -1,13 +1,19 @@
+
+// 引入eslint的插件
+const ESLintPlugin = require('eslint-webpack-plugin')
+
+// 引入处理html的插件
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const path = require("path")
 
 module.exports = {
     // 入口
-    entry: './src/main.js',
+    entry: './src/main.js',//相对路径
     //输出
     output: {
         // 所有打包文件的输出路径
         //__dirname nodejs的变量，代表当前文件的文件夹目录
-        path: path.resolve(__dirname, "dist"),//绝对路径
+        path: path.resolve(__dirname, "../dist"),//绝对路径
         // 入口文件打包输出的 文件名
         filename: 'static/js/main.js',
         // 打包时自动清空上一次打包结果
@@ -85,12 +91,43 @@ module.exports = {
                     filename: "static/media/[hash:10][ext][query]",
                 }
             },
+            // babel的使用
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,//排除node_modules不处理
+                use: {
+                    loader: 'babel-loader',
+                    // options: {
+                    //     presets: ['@babel/preset-env'],
+                    // },
+                },
+            },
         ],
     },
     //插件
     plugins: [
         // plugins的配置
+        // eslint插件的配置
+        new ESLintPlugin({
+            // context为检测哪些文件
+            context: path.resolve(__dirname, "../src")
+        }),
+        //使用html资源处理的插件
+        new HtmlWebpackPlugin({
+            // 插件配置项
+            // 模板：以public/index.html文件创建新的html文件
+            // 新的html文件特点：1，解构和原来一致，2：会自动引入打包生成的资源
+            template: path.resolve(__dirname, "../public/index.html"),
+        }),
     ],
+
+    // 开发服务器的配置:不会输出资源，再内存中进行打包的
+    devServer: {
+        host: 'localhost',//启动服务器域名
+        port: '3000',//启动服务器端口
+        open: true,//是否自动打开浏览器
+    },
+
     //模式
     // development开发模式，production生成模式
     mode: "development",

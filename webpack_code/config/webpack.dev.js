@@ -126,9 +126,14 @@ module.exports = {
         host: 'localhost',//启动服务器域名
         port: '3000',//启动服务器端口
         open: true,//是否自动打开浏览器
+        // hot 为HotModuleReplacement(HMR/热模块替换)
+        // 值false为关闭，true为打开
+        hot: true,
     },
 
     //模式
     // development开发模式，production生成模式
     mode: "development",
+    // devtool,此项配置为检测错误文件的定位位置为源文件
+    devtool: "cheap-module-source-map"
 };

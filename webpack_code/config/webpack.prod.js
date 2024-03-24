@@ -176,6 +176,9 @@ module.exports = {
     // development开发模式，production生成模式
     mode: "production",
 
+    // devtool,此项配置为检测错误文件的定位位置为源文件
+    devtool: "source-map",
+
     // 下面为关闭性能提示功能
     performance: {
         hints: 'warning', // 枚举 false关闭

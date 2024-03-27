@@ -139,7 +139,8 @@ module.exports = {
             // babel的使用
             {
                 test: /\.js$/,
-                exclude: /node_modules/,//排除node_modules不处理
+                // exclude: /node_modules/,//排除node_modules不处理（排除）
+                include: path.resolve(__dirname, "../src"),//（包含）只处理src下的文件，其他文件不处理
                 use: {
                     loader: 'babel-loader',
                     // options: {
@@ -155,7 +156,8 @@ module.exports = {
         // eslint插件的配置
         new ESLintPlugin({
             // context为检测哪些文件
-            context: path.resolve(__dirname, "../src")
+            context: path.resolve(__dirname, "../src"),
+            exclude: "node_modules",//默认值
         }),
         //使用html资源处理的插件
         new HtmlWebpackPlugin({

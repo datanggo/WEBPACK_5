@@ -1,4 +1,10 @@
 
+const OS = require("os")//获取系统参数
+const threads = OS.cpus().length  //cpu的核数
+
+// 压缩js的插件
+const TerserWabpackPlugin = require("terser-webpack-plugin")
+
 // 引入eslint的插件
 const ESLintPlugin = require('eslint-webpack-plugin')
 
@@ -22,87 +28,190 @@ module.exports = {
     },
     //加载器
     module: {
-        rules: [
-            // loader的配置
-            // 处理样式的loader
-            {
-                // test 标识只检测.css结尾的文件
-                test: /\.css$/,
-                use: [
-                    // 执行顺序，从右到左(从下到上)
-                    "style-loader",//将js中css通过创建style标签的形式添加到html中显示在页面上
-                    "css-loader",//将css资源编译成commonjs的模块到js中
-                ]
-            },
-            {
-                test: /\.less$/,
-                // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
-                use: [
-                    // compiles Less to CSS
-                    'style-loader',
-                    'css-loader',
-                    'less-loader',//将less编译成css文件
-                ]
-            },
-            {
-                test: /\.Scss$/,
-                // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
-                use: [
-                    // compiles Less to CSS
-                    'style-loader',
-                    'css-loader',
-                    'Scss-loader',//将Scss编译成css文件
-                ]
-            },
-            {
-                test: /\.styl$/,
-                // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
-                use: [
-                    // compiles Less to CSS
-                    'style-loader',
-                    'css-loader',
-                    'styl-loader',//将less编译成css文件
-                ]
-            },
-            // 处理图片资源的配置
-            {
-                test: /\.(png|jpe?g|gif|webp|svg)$/,
-                type: "asset",  //会转换成base64
-                parser: {
-                    dataUrlCondition: {
-                        // 一般就是小于10kb的图片会转换成base64
-                        // 优点：减少请求数据，缺点：体积会更大
-                        maxSize: 10 * 1024,//10kb
-                    },
-                },
-                generator: {
-                    // 生成输出的图片名称
-                    // [hash:10]   表示hash值取前10位
-                    filename: "static/images/[hash:10][ext][query]",
-                }
-            },
+        /*  rules: [
+             // loader的配置
+             // 处理样式的loader
+             {
+                 // test 标识只检测.css结尾的文件
+                 test: /\.css$/,
+                 use: [
+                     // 执行顺序，从右到左(从下到上)
+                     "style-loader",//将js中css通过创建style标签的形式添加到html中显示在页面上
+                     "css-loader",//将css资源编译成commonjs的模块到js中
+                 ]
+             },
+             {
+                 test: /\.less$/,
+                 // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                 use: [
+                     // compiles Less to CSS
+                     'style-loader',
+                     'css-loader',
+                     'less-loader',//将less编译成css文件
+                 ]
+             },
+             {
+                 test: /\.Scss$/,
+                 // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                 use: [
+                     // compiles Less to CSS
+                     'style-loader',
+                     'css-loader',
+                     'Scss-loader',//将Scss编译成css文件
+                 ]
+             },
+             {
+                 test: /\.styl$/,
+                 // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                 use: [
+                     // compiles Less to CSS
+                     'style-loader',
+                     'css-loader',
+                     'styl-loader',//将less编译成css文件
+                 ]
+             },
+             // 处理图片资源的配置
+             {
+                 test: /\.(png|jpe?g|gif|webp|svg)$/,
+                 type: "asset",  //会转换成base64
+                 parser: {
+                     dataUrlCondition: {
+                         // 一般就是小于10kb的图片会转换成base64
+                         // 优点：减少请求数据，缺点：体积会更大
+                         maxSize: 10 * 1024,//10kb
+                     },
+                 },
+                 generator: {
+                     // 生成输出的图片名称
+                     // [hash:10]   表示hash值取前10位
+                     filename: "static/images/[hash:10][ext][query]",
+                 }
+             },
+ 
+             // 处理字体文件
+             {
+                 test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
+                 type: "asset/resource",
+                 generator: {
+                     // [hash:10]   表示hash值取前10位
+                     filename: "static/media/[hash:10][ext][query]",
+                 }
+             },
+             // babel的使用
+             {
+                 test: /\.js$/,
+                 exclude: /node_modules/,//排除node_modules不处理
+                 use: {
+                     loader: 'babel-loader',
+                     // options: {
+                     //     presets: ['@babel/preset-env'],
+                     // },
+                 },
+             },
+         ], */
 
-            // 处理字体文件
+        // oneOf的使用
+        rules: [
+            // oneOf的配置：即只被其中一个loader处理
             {
-                test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
-                type: "asset/resource",
-                generator: {
-                    // [hash:10]   表示hash值取前10位
-                    filename: "static/media/[hash:10][ext][query]",
-                }
-            },
-            // babel的使用
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,//排除node_modules不处理
-                use: {
-                    loader: 'babel-loader',
-                    // options: {
-                    //     presets: ['@babel/preset-env'],
-                    // },
-                },
-            },
-        ],
+                // 每个文件只能被其中一个loader配置处理
+                oneOf: [
+                    // loader的配置
+                    // 处理样式的loader
+                    {
+                        // test 标识只检测.css结尾的文件
+                        test: /\.css$/,
+                        use: [
+                            // 执行顺序，从右到左(从下到上)
+                            "style-loader",//将js中css通过创建style标签的形式添加到html中显示在页面上
+                            "css-loader",//将css资源编译成commonjs的模块到js中
+                        ]
+                    },
+                    {
+                        test: /\.less$/,
+                        // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                        use: [
+                            // compiles Less to CSS
+                            'style-loader',
+                            'css-loader',
+                            'less-loader',//将less编译成css文件
+                        ]
+                    },
+                    {
+                        test: /\.Scss$/,
+                        // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                        use: [
+                            // compiles Less to CSS
+                            'style-loader',
+                            'css-loader',
+                            'Scss-loader',//将Scss编译成css文件
+                        ]
+                    },
+                    {
+                        test: /\.styl$/,
+                        // loader:xxx  这种写法只能使用一个loader，但是use可以使用多个loader
+                        use: [
+                            // compiles Less to CSS
+                            'style-loader',
+                            'css-loader',
+                            'styl-loader',//将less编译成css文件
+                        ]
+                    },
+                    // 处理图片资源的配置
+                    {
+                        test: /\.(png|jpe?g|gif|webp|svg)$/,
+                        type: "asset",  //会转换成base64
+                        parser: {
+                            dataUrlCondition: {
+                                // 一般就是小于10kb的图片会转换成base64
+                                // 优点：减少请求数据，缺点：体积会更大
+                                maxSize: 10 * 1024,//10kb
+                            },
+                        },
+                        generator: {
+                            // 生成输出的图片名称
+                            // [hash:10]   表示hash值取前10位
+                            filename: "static/images/[hash:10][ext][query]",
+                        }
+                    },
+
+                    // 处理字体文件
+                    {
+                        test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
+                        type: "asset/resource",
+                        generator: {
+                            // [hash:10]   表示hash值取前10位
+                            filename: "static/media/[hash:10][ext][query]",
+                        }
+                    },
+                    // babel的使用
+                    {
+                        test: /\.js$/,
+                        // exclude: /node_modules/,//排除node_modules不处理，其他文件都处理
+                        include: path.resolve(__dirname, "../src"),  //只处理src下面的文件，其他文件不处理
+                        use: [
+                            {
+                                loader: 'thread-loader',  //开启多进程
+                                options: {
+                                    works: threads, //进程数量
+                                }
+                            },
+                            {
+                                loader: 'babel-loader',
+                                // options: {
+                                //     presets: ['@babel/preset-env'],
+                                // },
+                                options: {
+                                    // presets: ['@babel/preset-env'],
+                                    cacheDirectory: true,//开启babel缓存
+                                    cacheComperssion: false,//关闭缓存文件的压缩
+                                },
+                            },
+                        ]
+                    },
+                ]
+            }
+        ]
     },
     //插件
     plugins: [
@@ -110,7 +219,13 @@ module.exports = {
         // eslint插件的配置
         new ESLintPlugin({
             // context为检测哪些文件
-            context: path.resolve(__dirname, "../src")
+            context: path.resolve(__dirname, "../src"),
+            exclude: "node_modules", //默认值
+            cache: true,//开启缓存
+            // 指定缓存位置
+            cacheLocation: path.resolve(__dirname, "../node_modules/.cache/eslintcache"),
+            // 开启多进程和进程数量
+            threads,
         }),
         //使用html资源处理的插件
         new HtmlWebpackPlugin({
@@ -119,7 +234,16 @@ module.exports = {
             // 新的html文件特点：1，解构和原来一致，2：会自动引入打包生成的资源
             template: path.resolve(__dirname, "../public/index.html"),
         }),
+
     ],
+    // 压缩js多线程
+    optimization: {
+        minimizer: [
+            new TerserWabpackPlugin([
+                parallel : threads,// 开启多进程和进程数量
+            ])
+        ]
+    },
 
     // 开发服务器的配置:不会输出资源，再内存中进行打包的
     devServer: {

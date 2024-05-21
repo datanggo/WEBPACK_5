@@ -1,6 +1,8 @@
 import React, { lazy, Suspense } from 'react'
 import { Route, Link, Routes, Redirect } from 'react-router-dom'
 
+import { Button } from 'antd'
+
 // import Home from "./pages/Home"
 // import About from "./pages/About"
 
@@ -12,6 +14,7 @@ export default function App() {
     return (
         <div>
             App
+            <Button type="primary">按钮</Button>
             <ul>
                 <li><Link to="/home">Home</Link></li>
                 <li><Link to="/about">About</Link></li>

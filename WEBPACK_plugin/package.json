@@ -1,0 +1,17 @@
+{
+  "name": "source",
+  "devDependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "css-loader": "^7.1.1",
+    "html-webpack-plugin": "^5.6.0",
+    "loader-utils": "^3.2.1",
+    "safe-require": "^1.0.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "debug": "node --inspect-brk ./node_modules/webpack-cli/cli.js"
+  }
+}
